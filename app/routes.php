@@ -11,7 +11,20 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('/', 'SessionsController@create');
+
+Route::get('login', 'SessionsController@create');
+
+Route::get('logout', 'SessionsController@destroy');
+
+Route::resource('users','UsersController');
+
+Route::resource('tickets','TicketsController');
+
+Route::resource('dReports','DReportsController');
+
+Route::get('student', 'StudentsController@home');
+
+Route::get('parent', 'ParentsController@home');
+
+Route::get('admin', 'AdminsController@home');

@@ -15,6 +15,8 @@ Route::get('/', 'SessionsController@create');
 
 Route::get('login', 'SessionsController@create');
 
+Route::post('login', 'SessionsController@authenticate');
+
 Route::get('logout', 'SessionsController@destroy');
 
 Route::resource('users','UsersController');

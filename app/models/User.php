@@ -27,7 +27,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      * The attributes included in the model's JSON form.
      * @var array
      */
-    protected $fillable = array('first_name', 'last_name', 'room_number','career');
+    protected $fillable = array('first_name', 'last_name', 'room_number', 'career', 'username');
 
 
     /**
@@ -54,7 +54,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      */
     public function reports()
     {
-        return $this->hasMany('reports');        
+        return $this->hasMany('Reports');        
     }
 
     /**
@@ -66,4 +66,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsToMany('Role', 'users_roles', 'user_id', 'role_id');
     }
 
+    /**
+     * Get the user associated with this user
+     * @return [models]
+     */
+    public function user() 
+    {
+        return $this->hasOne('User');
+    }
 }

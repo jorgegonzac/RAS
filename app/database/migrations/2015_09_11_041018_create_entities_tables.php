@@ -20,8 +20,8 @@ class CreateEntitiesTables extends Migration {
 			$t->string('last_name',20); 
 			$t->integer('room_number');
 			$t->string('career',5);
-			$t->string('password',200);
-			$t->integer('user_id')->references('id')->on('user')->nullable();
+			$t->string('password',200)->nullable();
+			$t->integer('username')->references('id')->on('user')->nullable();
 		});
 
 		/*

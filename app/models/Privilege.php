@@ -6,7 +6,7 @@ class Privilege extends Eloquent {
      * attributes defined as mass assignable (for security)
      * @var array
      */
-    protected $fillable = array('description');
+    protected $fillable = array('description', 'code');
 
     /**
      * get the roles associated with this privilege

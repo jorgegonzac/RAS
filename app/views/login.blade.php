@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 <head>
-<title>Look at me Login</title>
+<title>Residence Attendance System</title>
 </head>
 <body>
 
@@ -12,13 +12,13 @@
 
 <!-- if there are login errors, show them here -->
 <p>
-    {{ $errors->first('school_id') }}
+    {{ $errors->first('username') }}
     {{ $errors->first('password') }}
 </p>
 
 <p>
-    {{ Form::label('school_id', 'Matricula:') }}
-    {{ Form::text('school_id', '', array('placeholder' => 'A00123456','maxlength' => 9)) }}
+    {{ Form::label('username', 'Matricula:') }}
+    {{ Form::text('username', '', array('placeholder' => 'A00123456','maxlength' => 9)) }}
 </p>
 
 <p>

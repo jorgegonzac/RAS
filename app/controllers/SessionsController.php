@@ -1,7 +1,19 @@
 <?php
+use services\ServiceRASInterface;
 
-class SessionsController extends \BaseController {
+class SessionsController extends \BaseController 
+{
+	public $serviceRAS;
 
+	/**
+	 * Inject an instance of the serviceRasInterface into the controller
+	 * @param ServiciceRASInterface $serviceRAS [instance of the service]
+	 */
+    public function __construct(ServiceRASInterface $serviceRAS)
+     {
+        $this->serviceRAS = $serviceRAS; 
+     }
+	
 	/**
 	 * Show the form to login.
 	 *
@@ -22,7 +34,7 @@ class SessionsController extends \BaseController {
 		// validate the info, create rules for the inputs
 		$rules = array(
 		    'password' => 'required',
-			'school_id' => 'required|regex:/^[A a L l]\d{8}/'
+			'username' => 'required'
 		);
 
 		// run the validation rules on the inputs from the form
@@ -37,19 +49,45 @@ class SessionsController extends \BaseController {
 		}
 		else
 		{
-			//authenticate email account using pop ssl
-			$school_id = ucfirst(Input::get('school_id')); // ucfirst is used to transform the 'a' in the school_id to capitalize 
+			$username = Input::get('username');
 			$password = Input::get('password');
-			$popserver = 'pop.itesm.mx';
-			$auth = $this->auth_pop3_ssl($school_id, $password, $popserver);
 
-			if($auth)
-			{
-				return 'AUTHENTICATED';
-			}
-			else
-			{
-				return 'ERROR';
+			$authCode = $this->serviceRAS->authenticate($username, $password);
+
+			switch ($authCode) {
+				case -1:
+					// The username doesn't exist
+					$errors = "El usuario no existe";
+					return Redirect::to('login')
+			        ->withErrors($errors);
+
+				case -2:
+					// Invalid Password 
+					$errors = "La contraseña no coincide";
+					return Redirect::to('login')
+			        ->withErrors($errors);
+
+				case 1:
+					// Student 
+					return Redirect::to('student');
+
+				case 2:
+					// Resident Assitant
+					return Redirect::to('student');
+
+				case 3:
+					// Parent
+					return Redirect::to('parent');
+
+				case 4:
+					// Admin 
+					return Redirect::to('admin');
+									
+				default:
+					// If none, then redirect to login
+					$errors = "Hubo un error en el sistema. Intente de nuevo";
+					return Redirect::to('login')
+			        ->withErrors($errors);
 			}
 		}
 	}

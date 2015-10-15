@@ -57,13 +57,13 @@ class SessionsController extends \BaseController
 			switch ($authCode) {
 				case -1:
 					// The username doesn't exist
-					$errors = "El usuario no existe";
+					$errors['username'] = "El usuario no existe";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 
 				case -2:
 					// Invalid Password 
-					$errors = "La contraseña no coincide";
+					$errors['password'] = "La contraseña no coincide";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 
@@ -85,7 +85,7 @@ class SessionsController extends \BaseController
 									
 				default:
 					// If none, then redirect to login
-					$errors = "Hubo un error en el sistema. Intente de nuevo";
+					$errors['system'] = "Hubo un error en el sistema. Intente de nuevo";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 			}
@@ -109,69 +109,13 @@ class SessionsController extends \BaseController
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy()
 	{
-		//
+		// Logout from system and destroy session variables
+		Session::flush();
+		Auth::logout();
+
+		// redirect user to login page
+		return Redirect::to('login');
 	}
-
-	/**
-	 * [auth_pop3_ssl description]
-	 * @param  [type] $username  [description]
-	 * @param  [type] $password  [description]
-	 * @param  [type] $popserver [description]
-	 * @return [type]            [description]
-	 */
-    function auth_pop3_ssl($username, $password, $popserver) {
-     
-        $isSSL = 0;
-
-        if (substr($popserver, 0, 6) == "ssl://") {
-            $isSSL = 1;
-        }
-
-        if (trim($username) == '') {
-            return false;
-        } else {
-        
-                $fp = fsockopen("$popserver", 110, $errno, $errstr);
-        
-            if (!$fp) {
-                // failed to open POP3
-                return false;
-            } else {
-                //set_socket_blocking($fp, -1); // Turn off blocking
-
-                /*
-                  Clear the POP server's Banner Text.
-                  eg.. '+OK Welcome to etc etc'
-                 */
-
-                $trash = fgets($fp, 128); // Trash to hold the banner
-                fwrite($fp, "USER $username\r\n"); // POP3 USER CMD
-                $user = fgets($fp, 128);
-               	$pos = strpos($user, "+OK");
-                
-				if($pos === false){
-					$auth = false;
-				}else{
-					fwrite($fp, "PASS $password\r\n"); // POP3 PASS CMD
-                    $pass = fgets($fp, 128);
-                    
-					$pos2 = strpos($pass, "+OK");
-					if($pos2 === false){
-						$auth = false;
-					}else{
-						$auth = true;
-					}					
-				}
-				
-
-                fwrite($fp, "QUIT\r\n");
-                fclose($fp);
-                
-                return $auth;
-            }
-        }
-    }
-
 }

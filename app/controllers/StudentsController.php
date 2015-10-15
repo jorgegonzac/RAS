@@ -10,6 +10,7 @@ class StudentsController extends \BaseController {
 	public function home()
 	{
 		//
+		return 'home';
 	}
 
 

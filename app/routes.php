@@ -25,8 +25,8 @@ Route::resource('tickets','TicketsController');
 
 Route::resource('dReports','DReportsController');
 
-Route::get('student', 'StudentsController@home');
+Route::get('student', ['before' => 'auth', 'uses' => 'StudentsController@home']);
 
-Route::get('parent', 'ParentsController@home');
+Route::get('parent', ['before' => 'auth', 'uses' => 'ParentsController@home']);
 
-Route::get('admin', 'AdminsController@home');
+Route::get('admin', ['before' => 'auth', 'uses' => 'AdminsController@home']);

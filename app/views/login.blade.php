@@ -10,21 +10,19 @@
 {{ Form::open(array('url' => 'login')) }}
 <h1>Login</h1>
 
-<!-- if there are login errors, show them here -->
 <p>
     {{ $errors->first('username') }}
-    {{ $errors->first('password') }}
-</p>
-
-<p>
     {{ Form::label('username', 'Matricula:') }}
     {{ Form::text('username', '', array('placeholder' => 'A00123456','maxlength' => 9)) }}
 </p>
 
 <p>
+    {{ $errors->first('password') }}
     {{ Form::label('password', 'Contraseña:') }}
     {{ Form::password('password', array('placeholder' => '************')) }}                       
 </p>
-
+<p>
+	{{ $errors->first('system')}}
+</p>
 <p>{{ Form::submit('Ingresar') }}</p>
 {{ Form::close() }}

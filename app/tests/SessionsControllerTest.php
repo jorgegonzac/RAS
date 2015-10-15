@@ -168,7 +168,7 @@ class SessionsControllerTest extends TestCase
 
 	 	// data credentials
 	 	$data['username'] = 'A00567911';
-	 	$data['password'] = 'Firulais123*';
+	 	$data['password'] = 'password';
 
 	    // Call the authenticate method from controller 
 	    $methodResponse = $this->call('POST', 'login', $data);		

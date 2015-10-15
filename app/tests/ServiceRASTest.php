@@ -94,7 +94,7 @@ class ServiceRASTest extends TestCase
 	public function testInvalidPasswordAdminParent()
 	{
 		$service = new ServiceRAS();
-		$username = 'padre';
+		$username = 'parent';
 		$password = 'admin';
 		$expected = -2;
 		$response = $service->authenticate($username, $password);

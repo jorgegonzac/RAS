@@ -114,4 +114,61 @@ class ServiceRASTest extends TestCase
 		$response = $service->authenticate($username, $password);
 		$this->assertEquals($response, $expected);
 	}
+
+	// Use case: student can create/update an absence ticket
+
+	/**
+	 * Test when user creates an absence ticket and with preconditions 
+	 * @return [type] [description]
+	 */
+	public function testStudentCreatesAbsenceTicket()
+	{
+		$service = new ServiceRAS();
+
+		// Set parameters
+		$username = 'A00567911';
+		$place = 'Leon';
+		$expected = 201;
+		$phone = '4771180441';
+		$type = 1;
+
+		// Authenticate as a student
+	 	$this->be(User::find(1));
+
+	 	// Get open ticket
+	 	$openTicket = $service->getOpenTicket('A00567911');
+
+	 	// if open ticket exists erase it
+	 	if(!is_null($openTicket))
+	 	{
+	 		$ticket = Ticket::find($openTicket[0] -> id);
+	 		$ticket->delete();
+	 	}
+
+		$response = $service->createTicket($username, $place, $phone, $type, null);
+		$this->assertEquals($response, $expected);
+	}
+
+	/**
+	 * Test when user tries to modify the open ticket
+	 * @return [type] [description]
+	 */
+	public function testStudentModifiesOpenTicket()
+	{
+		$service = new ServiceRAS();
+
+		// Set parameters
+		$username = 'A00567911';
+		$place = 'Leon';
+		$expected = 200;
+		$phone = '4771180441';
+		$type = 1;
+
+		// Authenticate as a student
+	 	$this->be(User::find(1));
+
+		$response = $service->createTicket($username, $place, $phone, $type, null);
+		$response = $service->createTicket($username, $place, $phone, $type, null);
+		$this->assertEquals($response, $expected);
+	}
 }

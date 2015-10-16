@@ -2,7 +2,6 @@
 
 class SessionsControllerTest extends TestCase 
 {
-
 	/**
 	 * Test that an student logins with valid credentials
 	 * @return [type] [description]
@@ -10,7 +9,7 @@ class SessionsControllerTest extends TestCase
 	public function testValidCredentialsStudent()
 	{
 		// Authentication code that will be returned from mocked method
-		$expectedAuthCode = -1;
+		$expectedAuthCode = 1;
 
 	   	// Create mock service
 		$mock = Mockery::mock('Services\ServiceRASInterface');

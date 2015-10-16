@@ -22,11 +22,19 @@
             @endforeach
           </div>
         @elseif($success)
-	        <div class="alert alert-success alert-dismissable">
-	            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	            <h5>Success:</h5>
-	              {{$success}}
-	          </div>
+        	@if($type == 4)
+		        <div class="alert alert-warning alert-dismissable">
+	            	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	            	<h5>Success:</h5>
+	              	{{$success}}
+	          	</div>
+        	@else
+	        	<div class="alert alert-success alert-dismissable">
+	            	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	            	<h5>Success:</h5>
+	              	{{$success}}
+    	        </div>
+	        @endif
         @endif
 
         {{ Form::open(array('url' => 'tickets')) }}
@@ -39,10 +47,12 @@
           <select class="form-control" name="type">
           	@if($type == 2)
 		  	  <option value="1">Local</option>
-		  	  <option value="2" selected>Foraneo</option>
+		  	  <option value="2" selected>Foreign</option>
+		  	@elseif($type == 4)	  	
+		  	  <option value="4" selectedb>Out of time</option>
 		  	@else
-		  	  <option value="1" selectedb>Local</option>
-		  	  <option value="2">Foraneo</option>		  	
+		  		<option value="1" selectedb>Local</option>
+		  	  	<option value="2">Foreign</option>	
 		  	@endif
      	  </select>
 	      	@if(!$place)

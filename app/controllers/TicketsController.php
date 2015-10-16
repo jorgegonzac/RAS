@@ -59,7 +59,7 @@ class TicketsController extends \BaseController
 			$rules = array(
 			    'place' => 'required|max:50',
 				'phone' => 'required|numeric|digits:10',
-				'type' => 'required|numeric|between:1,2'
+				'type' => 'required|numeric|between:1,4'
 			);
 
 			// run the validation rules on the inputs from the form
@@ -74,7 +74,7 @@ class TicketsController extends \BaseController
 			}
 
 			// Call the service to create ticket
-			$response = $this->serviceRAS->createTicket($username, $place, $phone, $type, null);		
+			$response = $this->serviceRAS->studentCreatesTicket($username, $place, $phone, $type, null);		
 
 			if($response == 200)
 			{
@@ -85,12 +85,10 @@ class TicketsController extends \BaseController
 			{
 				$success = 'The ticket was created';
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);				
-			}elseif($response == 412)
+			}elseif($response == 202)
 			{
-				$errors = 'Error: tickets can only be created and updated before 11pm and after 6am';
-				return Redirect::to('student')
-			        ->withErrors($errors) // send back all errors to the  form
-			        ->withInput(Input::all());				
+				$success = 'The ticket was created but as -out of time- ';
+				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => 4, 'success' => $success]);				
 			}	
 		
 			// The system had an error

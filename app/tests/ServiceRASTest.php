@@ -145,7 +145,7 @@ class ServiceRASTest extends TestCase
 	 		$ticket->delete();
 	 	}
 
-		$response = $service->createTicket($username, $place, $phone, $type, null);
+		$response = $service->studentCreatesTicket($username, $place, $phone, $type, null);
 		$this->assertEquals($response, $expected);
 	}
 
@@ -167,8 +167,8 @@ class ServiceRASTest extends TestCase
 		// Authenticate as a student
 	 	$this->be(User::find(1));
 
-		$response = $service->createTicket($username, $place, $phone, $type, null);
-		$response = $service->createTicket($username, $place, $phone, $type, null);
+		$response = $service->studentCreatesTicket($username, $place, $phone, $type, null);
+		$response = $service->studentCreatesTicket($username, $place, $phone, $type, null);
 		$this->assertEquals($response, $expected);
 	}
 }

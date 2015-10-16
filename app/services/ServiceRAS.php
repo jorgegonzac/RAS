@@ -100,10 +100,10 @@ class ServiceRAS implements ServiceRASInterface
 		}
 
 		return $openTicket;
-	}
+	}	
 
 	/**
-	 * Handles the request to create ticket from the ticketsController
+	 * Public function that creates and modifies ticket for students
 	 * @param  [string] $username [username of the user of the ticket]
 	 * @param  [string] $place    [place where the user of the ticket will go]
 	 * @param  [string] $phone    [phone of the user of the ticket]
@@ -111,39 +111,7 @@ class ServiceRAS implements ServiceRASInterface
 	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
 	 * @return [int]           [A response code. 201: created, 200: updated, 500:internal error]
 	 */
-	public function createTicket($username, $place, $phone, $type, $checkIn)
-	{
-		$responseCode;
-
-		// Check type of ticket to decide which method should attend the request
-		switch ($type) {
-			// If type = Local/Foreign, then its a ticket for a student
-			case 1:
-			case 2:
-				$responseCode = $this->studentCreatesTicket($username, $place, $phone, $type, $checkIn);
-				break;
-			case 3:
-				break;
-			case 4:
-				break;			
-			default:
-				$responseCode = 500;
-				break;
-		}
-		
-		return $responseCode;
-	}		
-
-	/**
-	 * Private function that creates and modifies ticket for students
-	 * @param  [string] $username [username of the user of the ticket]
-	 * @param  [string] $place    [place where the user of the ticket will go]
-	 * @param  [string] $phone    [phone of the user of the ticket]
-	 * @param  [int] $type     [type of ticket. 1:local, 2:foreign, 3:absence, 4:out of time]
-	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
-	 * @return [type]           [description]
-	 */
-	private function studentCreatesTicket($username, $place, $phone, $type, $checkIn)
+	public function studentCreatesTicket($username, $place, $phone, $type, $checkIn)
 	{
 		// Check if ther is an open ticket from this user
 		$openTicket = $this->getOpenTicket($username);
@@ -168,13 +136,12 @@ class ServiceRAS implements ServiceRASInterface
 		// Fill ticket with he given data
 		$ticket -> place = $place;
 		$ticket -> phone = $phone;
-		$ticket -> check_in = $checkIn;
+		$ticket -> type = $type;
+		$ticket -> check_in = DB::raw('NOW()');
 
 		// Get user by his username
 		$user = User::where('username', '=', $username)->get();
 		$ticket -> user_id = $user[0]->id;
-
-		// Business Rule: tickets cannot be created between 11pm and 6am
 		
 		// Set timezone to Mexico City
 		date_default_timezone_set('America/Mexico_City');
@@ -183,11 +150,14 @@ class ServiceRAS implements ServiceRASInterface
 		$actualTime = getdate();
 		$hours = $actualTime['hours'];
 
-		// Check if time is between 11pm and 6am
+		// Business Rule: Check if time is between 11pm and 6am
 		if($hours >= 23 || $hours <6)
 		{
-			// Return error: Precondition failed
-			return 412;
+			// Set type to 'Out of time'
+			$ticket -> type = 4;
+
+			// Set response code to 202 so the controller can send the warning msg
+			$responseCode = 202;
 		}
 
 		// save ticket in DB

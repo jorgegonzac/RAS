@@ -15,7 +15,7 @@ class TicketsControllerTest extends TestCase
 		$mock = Mockery::mock('Services\ServiceRASInterface');
 
 		// mock the method createTicket and return the expected code
-	    $mock->shouldReceive('createTicket')->withAnyArgs()->once()->andReturn($expected);
+	    $mock->shouldReceive('studentCreatesTicket')->withAnyArgs()->once()->andReturn($expected);
 	 
 	 	// inject mock service
 	    $this->app->instance('Services\ServiceRASInterface', $mock);
@@ -82,7 +82,7 @@ class TicketsControllerTest extends TestCase
 		$mock = Mockery::mock('Services\ServiceRASInterface');
 
 		// mock the method createTicket and return the expected code
-	    $mock->shouldReceive('createTicket')->withAnyArgs()->once()->andReturn($expected);
+	    $mock->shouldReceive('studentCreatesTicket')->withAnyArgs()->once()->andReturn($expected);
 	 
 	 	// inject mock service
 	    $this->app->instance('Services\ServiceRASInterface', $mock);
@@ -111,7 +111,7 @@ class TicketsControllerTest extends TestCase
 		$mock = Mockery::mock('Services\ServiceRASInterface');
 
 		// mock the method createTicket and return the expected code
-	    $mock->shouldReceive('createTicket')->withAnyArgs()->once()->andReturn($expected);
+	    $mock->shouldReceive('studentCreatesTicket')->withAnyArgs()->once()->andReturn($expected);
 	 
 	 	// inject mock service
 	    $this->app->instance('Services\ServiceRASInterface', $mock);

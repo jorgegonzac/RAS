@@ -1,4 +1,4 @@
-@extends('../layouts/loginLayout')
+@extends('../layouts/studentLayout')
 
 @section('content')
 

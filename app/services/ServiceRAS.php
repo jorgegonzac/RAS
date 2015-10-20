@@ -88,8 +88,16 @@ class ServiceRAS implements ServiceRASInterface
 	 */
 	public function getOpenTicket($username)
 	{
-		// Check if user has an open ticket in DB
+		// Check if user exists
 		$user = User::where('username', '=', $username)->get();
+
+		// If doesn't exist, return null
+		if(empty($user[0]))
+		{
+			return null;
+		}
+
+		// Check if user has an open ticket in DB
 		$openTicket = Ticket::where('user_id', '=', $user[0]->id)
 							->where('check_out', '=', null)->get();
 
@@ -173,6 +181,53 @@ class ServiceRAS implements ServiceRASInterface
 	}
 
 	/**
+	 * Public function that creates absences tickets 
+	 * @param  [string] $username [username of the user of the ticket]
+	 * @param  [string] $place    [place where the user of the ticket will go]
+	 * @param  [string] $phone    [phone of the user of the ticket]
+	 * @param  [int] $type     [type of ticket. 1:local, 2:foreign, 3:absence, 4:out of time]
+	 * @return [int]           [A response code. 201: created, 200: updated, 500:internal error]
+	 */
+	public function residentAssistantCreatesTicket($username, $place, $phone, $type)
+	{
+		// Check if user has any open ticket
+		$openTicket = $this->getOpenTicket($username);
+
+		if(!is_null($openTicket))
+		{
+			// If there is an open ticket return 412 (precondition failed)
+			return 412;
+		}
+
+		// Create a new ticket reference
+		$ticket = new Ticket();
+
+		// Fill ticket with he given data
+		$ticket -> place = $place;
+		$ticket -> phone = $phone;
+		$ticket -> type = $type;
+		$ticket -> check_in = DB::raw('NOW()');
+
+		// Get user by his username
+		$user = User::where('username', '=', $username)->get();
+		$ticket -> user_id = $user[0]->id;
+		
+		// Set timezone to Mexico City
+		date_default_timezone_set('America/Mexico_City');
+
+		// save ticket in DB
+		$response = $ticket -> save();
+
+		// check that there were no errors while saving
+		if($response)
+		{
+			return 201;
+		}
+
+		return 500;
+	}
+
+	/**
 	 * Private function that allows admin to create tickets for an especific student
 	 * @param  [string] $username [username of the user of the ticket]
 	 * @param  [string] $place    [place where the user of the ticket will go]
@@ -232,6 +287,47 @@ class ServiceRAS implements ServiceRASInterface
 		}
 
 		return 500;
+	}
+
+	/**
+	 * gets the attendance list of the given floor. 
+	 * @param  [integer] 	 The floor of the wanted list. Values: 100,200,300,400
+	 * @return [array]        The list of the given floor
+	 */
+	public function getAttendanceList($floor)
+	{
+		// Calculate the next floor
+		$nextFloor = $floor + 100;
+
+		// Get the users that live between floor and the next floor
+		$users = User::where('room_number', '>=', $floor)
+				   	->where('room_number', '<', $nextFloor)->get();
+		
+		$list = array();
+
+		// for each user, get the important information in order to push it to the list and the return it
+		foreach($users as $user)
+		{
+			// get open ticket if exists
+			$openTicket = $this -> getOpenTicket($user -> username);
+
+			// Save only important data from user to send it later
+			$userData['name'] = $user -> first_name . " " .$user -> last_name;
+			$userData['room_number'] = $user -> room_number;
+			$userData['ticket'] = '';
+			$userData['username'] = $user -> username;
+
+			// if exists, save open ticket type in user data
+			if(!is_null($openTicket))
+			{
+				$userData['ticket'] = $openTicket[0] -> type;
+			}
+
+			// save user data into list
+			array_push($list, $userData);
+		}
+
+		return $list;
 	}
 }
 		

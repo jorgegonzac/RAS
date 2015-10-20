@@ -46,7 +46,6 @@ class TicketsController extends \BaseController
 		// Check for user authorization
 		if(Session::get('role')==1 || Session::get('role')==2)
 		{
-
 			// Get form data
 			$place = Input::get('place');
 			$phone = Input::get('phone');
@@ -150,5 +149,115 @@ class TicketsController extends \BaseController
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * Shows the attendance list according to role and floor
+	 * @return [type] [description]
+	 */
+	public function showAttendanceList()
+	{
+		// Check for user authorization (RA+Admin)
+		if(Session::get('role')==2 || Session::get('role')==4)
+		{			
+			$finalList;
+
+			// Check if user is admin
+			if(Session::get('role')==4)
+			{
+				// Get the attendance list of each floor
+				$listFloor1 = $this->serviceRAS->getAttendanceList(100);	
+				$listFloor2 = $this->serviceRAS->getAttendanceList(200);	
+				$listFloor3 = $this->serviceRAS->getAttendanceList(300);	
+				$listFloor4 = $this->serviceRAS->getAttendanceList(400);	
+
+				// Merge all the lists into a final list
+				$finalList = array_merge($listFloor1, $listFloor2, $listFloor3, $listFloor4);
+			}
+			else
+			{
+				// Get user's room
+				$userRoom = Auth::user()->room_number;
+
+				// RA is man, get only floor 1 and 2
+				// Business Rule: RA's can only take attendance in the floors of their same gender
+				if($userRoom < 300)
+				{
+					$listFloor1 = $this->serviceRAS->getAttendanceList(100);	
+					$listFloor2 = $this->serviceRAS->getAttendanceList(200);
+					$finalList = array_merge($listFloor1, $listFloor2);	
+				}
+				else
+				{
+					$listFloor3 = $this->serviceRAS->getAttendanceList(300);	
+					$listFloor4 = $this->serviceRAS->getAttendanceList(400);
+					$finalList = array_merge($listFloor3, $listFloor4);	
+				}
+			}
+
+			return View::make('student.attendance', ['students' => $finalList]);
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');			
+		}
+	}
+
+	/**
+	 * Saves the attendance list into DB
+	 * @return [type] [description]
+	 */
+	public function saveAttendanceList()
+	{
+		// Check for user authorization (RA+Admin)
+		if(Session::get('role')==2 || Session::get('role')==4)
+		{			
+			$students = Input::get('attendanceList');
+			
+			// Here the resume of transactions will be saved 
+			$created = array();
+			$closed = array();
+			$problems = array();
+
+			// Check if there are any students selected
+			if(is_array($students))
+			{
+				foreach($students as $key => $username)
+				{
+					// Data that will be sent to the method
+					$place = 'Absence';
+					$phone = '4421610181'; // This is the phone of the Residence Hall 
+					$type = 3;
+
+					// Call method to create absence
+					$response = $this->serviceRAS->residentAssistantCreatesTicket($username, $place, $phone, $type);		
+
+					// Check response code
+					if($response == 201)
+					{
+						// Absence was created succesfully
+						$created[] = $username;
+					}
+					elseif($response == 412)
+					{
+						// There was an open ticket, close it ?					
+						$closed[] = $username;
+					}
+					else
+					{
+						// There was a system error
+						$problems[] = $username;					
+					}
+				}
+			}
+
+			return Redirect::route('takeAttendance')->with(['created' => $created, 'closed' => $closed, 'problems' => $problems]);
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');			
+		}
 	}
 }

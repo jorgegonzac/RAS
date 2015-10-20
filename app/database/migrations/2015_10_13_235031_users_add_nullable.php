@@ -13,7 +13,7 @@ class UsersAddNullable extends Migration {
 	public function up()
 	{
 		//
-		DB::statement('ALTER TABLE `users` MODIFY `room_number` TINYINT NULL;');
+		DB::statement('ALTER TABLE `users` MODIFY `room_number` INTEGER(11) NULL;');
 		DB::statement('ALTER TABLE `users` MODIFY `career` VARCHAR(5) NULL;');
 	}
 
@@ -25,7 +25,7 @@ class UsersAddNullable extends Migration {
 	public function down()
 	{
 		//
-		DB::statement('ALTER TABLE `users` MODIFY `room_number` integer(11) NULL;');
+		DB::statement('ALTER TABLE `users` MODIFY `room_number` INTEGER(11) NULL;');
 		DB::statement('ALTER TABLE `users` MODIFY `career` VARCHAR(5) NOT NULL;');
 	}
 

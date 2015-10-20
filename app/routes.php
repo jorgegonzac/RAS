@@ -30,3 +30,7 @@ Route::get('student', ['before' => 'auth', 'uses' => 'StudentsController@home'])
 Route::get('parent', ['before' => 'auth', 'uses' => 'ParentsController@home']);
 
 Route::get('admin', ['before' => 'auth', 'uses' => 'AdminsController@home']);
+
+Route::get('takeAttendance', ['before' => 'auth', 'as' => 'takeAttendance', 'uses' => 'TicketsController@showAttendanceList']);
+
+Route::post('saveAttendance', ['before' => 'auth', 'uses' => 'TicketsController@saveAttendanceList']);

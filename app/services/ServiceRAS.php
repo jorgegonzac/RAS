@@ -6,6 +6,7 @@ use Hash;
 use Session;
 use Ticket;
 use DB;
+use Report;
 include("PopService.php");
 
 
@@ -228,7 +229,7 @@ class ServiceRAS implements ServiceRASInterface
 	}
 
 	/**
-	 * Private function that allows admin to create tickets for an especific student
+	 * Public function that allows admin to create tickets for an especific student
 	 * @param  [string] $username [username of the user of the ticket]
 	 * @param  [string] $place    [place where the user of the ticket will go]
 	 * @param  [string] $phone    [phone of the user of the ticket]
@@ -236,54 +237,105 @@ class ServiceRAS implements ServiceRASInterface
 	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
 	 * @return [type]           [description]
 	 */
-	private function adminCreatesTicket($username, $place, $phone, $type, $checkIn)
+	public function adminCreatesTicket($username, $place, $phone, $type, $checkIn, $checkOut)
 	{
-		// Check if ther is an open ticket from this user
-		$openTicket = $this->getOpenTicket($username);
-		$ticket;
+		// Check if username exists 
+		$user = User::where('username', '=', $username)->get();
 
-		// Response code
-		$responseCode;
+		// If username doesn't exist, return error 'precondition failed'
+		if(empty($user[0]))
+		{
+			return 412;
+		}
+		
+		// New ticket reference
+		$ticket = new Ticket();
 
-		if(is_null($openTicket))
-		{
-			// If there is no open ticket create a new reference of the ticket
-			$ticket = new Ticket();
-			$responseCode = 201;
-		}
-		else
-		{
-			// If there is no open ticket then get the ticket reference
-			$ticket = Ticket::find($openTicket[0] -> id);
-			$responseCode = 200;
-		}
 
 		// Fill ticket with he given data
 		$ticket -> place = $place;
 		$ticket -> phone = $phone;
+		$ticket -> type = $type;
+		$ticket -> check_in = $checkIn;
+		$ticket -> check_out = $checkOut;
 
-		// Get user by his username
-		$user = User::where('username', '=', $username)->get();
+		// Get user id and save it on ticket
 		$ticket -> user_id = $user[0]->id;
-
-		$response = 500;
-
-		// If the checkin variable is null then save the system date
-		if(is_null($checkIn))
-		{
-			$ticket -> check_in = DB::raw('NOW()');
-		}
-		else
-		{
-			$ticket -> check_in = $checkIn;
-		}
 
 		// save ticket in DB
 		$response = $ticket -> save();
 
 		if($response)
 		{
-			return $responseCode;
+			return 201;
+		}
+
+		return 500;
+	}
+
+	/**
+	 * Public function that allows admin to update tickets for an especific student
+	 * @param  [int] $id [The id of the ticket]
+	 * @param  [string] $username [username of the user of the ticket]
+	 * @param  [string] $place    [place where the user of the ticket will go]
+	 * @param  [string] $phone    [phone of the user of the ticket]
+	 * @param  [int] $type     [type of ticket. 1:local, 2:foreign, 3:absence, 4:out of time]
+	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
+	 * @return [type]           [description]
+	 */
+	public function adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut)
+	{
+		// Check if username exists 
+		$user = User::where('username', '=', $username)->get();
+
+		// If username doesn't exist, return error 'precondition failed'
+		if(empty($user[0]))
+		{
+			return 412;
+		}
+		
+		// New ticket reference
+		$ticket = Ticket::find($id);
+		
+		// Check if ticket exist in DB
+		if(empty($ticket))
+		{
+			// Return 'resource not found'
+			return 404;
+		}
+
+		// Fill ticket with he given data
+		$ticket -> place = $place;
+		$ticket -> phone = $phone;
+		$ticket -> type = $type;
+
+		if(!$checkIn)
+		{
+			$ticket -> check_in = null;			
+		}
+		else
+		{
+			$ticket -> check_in = $checkIn;			
+		}
+		if(!$checkOut)
+		{
+			$ticket -> check_out = null;			
+		}
+		else
+		{
+			$ticket -> check_out = $checkOut;			
+		}
+
+		// Get user id and save it on ticket
+		$ticket -> user_id = $user[0]->id;
+
+		// save ticket in DB
+		$response = $ticket -> save();
+
+		if($response)
+		{
+			// Ticket was successfully updated
+			return 200;
 		}
 
 		return 500;
@@ -328,6 +380,206 @@ class ServiceRAS implements ServiceRASInterface
 		}
 
 		return $list;
+	}
+
+	/**
+	 * Deletes ticket with the given id
+	 * @param  [int] $id The ticket id
+	 * @return [int]     A response code that correspond to the result of deleting the ticket
+	 */
+	public function deleteTicket($id)
+	{
+		// Get ticket from id
+		$ticket = Ticket::find($id);
+
+		// Check that ticket exist
+		if(empty($ticket))
+		{
+			// return Resource not found
+			return 404;
+		}
+
+		// Attemp to delete the ticket
+		$result = $ticket -> delete();
+
+		// If attemp was success
+		if($result)
+		{
+			// Server successfully processed the request, but is not returning any content
+			return 204;
+		}
+
+		// there was a system error
+		return 500;
+	}
+
+	/**
+	 * Get all the tickets
+	 * @return [array] An array with all the tickets instances
+	 */
+	public function getTickets()
+	{
+		$tickets = Ticket::all();
+
+		return $tickets;
+	}
+
+	/**
+	 * Get the ticket with the given id
+	 * @param  [int] $id The ticket id
+	 * @return [Ticket]     An instance of the ticket
+	 */
+	public function getTicket($id)
+	{
+		$ticket = Ticket::find($id);
+
+		return $ticket;
+	}
+
+	/**
+	 * Get disciplinary reports
+	 * @return [array] [an array with the disciplinary reports]
+	 */
+	public function getDReports()
+	{
+		$dReports = Report::all();
+
+		return $dReports;
+	}
+
+	/**
+	 * Creat a disciplinary report with the given data
+	 * @param  [string] $username    The username of the student who belongs the report
+	 * @param  [string] $description A description of what the studen did and was against the resident hall laws
+	 * @param  [date] $date        The date when the DReport was created
+	 * @return [int]              A response code that correspond to a final status previously defined
+	 */
+	public function createDReport($username, $description, $date)
+	{
+		// Check if username exists 
+		$user = User::where('username', '=', $username)->get();
+
+		// If username doesn't exist, return error 'precondition failed'
+		if(empty($user[0]))
+		{
+			return 412;
+		}
+		
+		// New DReport reference
+		$report = new Report();
+
+		// Fill DReport with he given data
+		$report -> description = $description;
+		$report -> date = $date;
+
+		// Get user id and save it on ticket
+		$report -> user_id = $user[0]->id;
+
+		// save ticket in DB
+		$response = $report -> save();
+
+		if($response)
+		{
+			// DReport was succesfully created
+			return 201;
+		}
+
+		// System had an error while processing
+		return 500;
+	}	
+
+	/**
+	 * Creat a disciplinary report with the given data
+	 * @param  [int] $id    The id of the dReport to update
+	 * @param  [string] $username    The username of the student who belongs the report
+	 * @param  [string] $description A description of what the studen did and was against the resident hall laws
+	 * @param  [date] $date        The date when the DReport was created
+	 * @return [int]              A response code that correspond to a final status previously defined
+	 */
+	public function updateDReport($id, $username, $description, $date)
+	{
+		// Check if username exists 
+		$user = User::where('username', '=', $username)->get();
+
+		// If username doesn't exist, return error 'precondition failed'
+		if(empty($user[0]))
+		{
+			return 412;
+		}
+		
+		// New DReport reference
+		$report = Report::find($id);
+
+		// Fill DReport with he given data
+		$report -> description = $description;
+
+		// check if date is null, if yes then set to null
+		if(!$date)
+		{
+			$report -> date = null;			
+		}
+		else
+		{
+			$report -> date = $date;			
+		}
+
+		// Get user id and save it on ticket
+		$report -> user_id = $user[0]->id;
+
+		// save ticket in DB
+		$response = $report -> save();
+
+		if($response)
+		{
+			// DReport was succesfully updated
+			return 200;
+		}
+
+		// System had an error while processing
+		return 500;
+	}	
+
+	/**
+	 * Delete the DReport with the given id
+	 * @param  [int] $id [the DReport id]
+	 * @return [int]     [A final status code of the process]
+	 */
+	public function deleteDReport($id)
+	{
+		// Get DReport from id
+		$DReport = Report::find($id);
+
+		// Check that DReport exist
+		if(empty($DReport))
+		{
+			// return Resource not found
+			return 404;
+		}
+
+		// Attemp to delete the DReport
+		$result = $DReport -> delete();
+
+		// If attemp was success
+		if($result)
+		{
+			// Server successfully processed the request, but is not returning any content
+			return 204;
+		}
+
+		// there was a system error
+		return 500;
+	}	
+
+	/**
+	 * Get the dReport with the given id
+	 * @param  [int] $id The dReport id
+	 * @return [Ticket]     An instance of the dReport
+	 */
+	public function getDReport($id)
+	{
+		$dReport = Report::find($id);
+
+		return $dReport;
 	}
 }
 		

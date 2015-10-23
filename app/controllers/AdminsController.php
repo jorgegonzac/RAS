@@ -9,7 +9,16 @@ class AdminsController extends \BaseController {
 	 */
 	public function home()
 	{
-		//
+		// Check for user authorization
+		if(Session::get('role')==4)
+		{
+			return View::make('admin.index');			
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}		
 	}
 
 	/**

@@ -34,3 +34,5 @@ Route::get('admin', ['before' => 'auth', 'uses' => 'AdminsController@home']);
 Route::get('takeAttendance', ['before' => 'auth', 'as' => 'takeAttendance', 'uses' => 'TicketsController@showAttendanceList']);
 
 Route::post('saveAttendance', ['before' => 'auth', 'uses' => 'TicketsController@saveAttendanceList']);
+
+Route::post('adminTickets', ['before' => 'auth', 'uses' => 'TicketsController@storeTicket']);

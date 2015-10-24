@@ -17,6 +17,7 @@ interface ServiceRASInterface
 	public function adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut);
 	public function getDReports();
 	public function getDReport($id);
+	public function getDReportsByUserID($id);
 	public function createDReport($username, $description, $date);
 	public function updateDReport($id, $username, $description, $date);
 	public function deleteDReport($id);

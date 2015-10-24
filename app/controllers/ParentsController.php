@@ -35,7 +35,32 @@ class ParentsController extends \BaseController
 			return Redirect::to('login');
 		}			
 	}
+	
+	/**
+	 * Display user information
+	 *
+	 * @return view
+	 */
+	public function showMyInfo()
+	{
+		// Check for user authorization
+		if(Session::get('role') == 3)
+		{
+			// Get parent instance
+			$parent = Auth::user();
 
+			// Get son instance using user_id
+			$son = $this->serviceRAS->getUser($parent->user_id);
+
+			// return view with the tickets
+			return View::make('parent.showMyInfo')->with(['parent' => $parent, 'son' => $son]);						
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}			
+	}
 
 	/**
 	 * Display disciplinary reports
@@ -44,6 +69,20 @@ class ParentsController extends \BaseController
 	 */
 	public function showDReports()
 	{
+		// Check for user authorization
+		if(Session::get('role') == 3)
+		{
+			// Get DReports using son's id
+			$dReports = $this->serviceRAS->getDReportsByUserID(Auth::user()->user_id);
+
+			// return view with the tickets
+			return View::make('parent.dReports')->with(['dReports' => $dReports]);						
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}			
 	}
 
 	/**

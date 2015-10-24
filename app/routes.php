@@ -45,3 +45,4 @@ Route::get('mySonTickets', ['before' => 'auth', 'uses' => 'ParentsController@sho
 
 Route::get('mySonDReports', ['before' => 'auth', 'uses' => 'ParentsController@showDReports']);
 
+Route::get('myInfo', ['before' => 'auth', 'uses' => 'ParentsController@showMyInfo']);

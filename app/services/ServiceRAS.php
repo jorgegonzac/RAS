@@ -7,6 +7,7 @@ use Session;
 use Ticket;
 use DB;
 use Report;
+use Mail;
 include("PopService.php");
 
 
@@ -580,6 +581,62 @@ class ServiceRAS implements ServiceRASInterface
 		$dReport = Report::find($id);
 
 		return $dReport;
+	}
+
+	/**
+	 * Create a parent account with the given data
+	 * @param  [string] $username  Parent username
+	 * @param  [string] $schoolID  Son's school id
+	 * @param  [string] $firstName First name
+	 * @param  [string] $lastName  Last name
+	 * @param  [string] $email     Parent's Email
+	 * @param  [string] $password  Password
+	 * @return [int]            Final status code of the process
+	 */
+	public function createParent($username, $schoolID, $firstName, $lastName, $email, $password)
+	{
+		// check if schoolID exists
+		$son = User::where('username', '=', $schoolID)->get();
+
+		// If schooID doesn't exist, return error 'precondition failed' (son's id need to be registered)
+		if(empty($son[0]))
+		{
+			return 412;
+		}		
+
+		// Creat parent instance
+		$parent = new User();
+
+		// Fill parent with given data
+		$parent -> username = $username; 
+		$parent -> first_name = $firstName;
+		$parent -> last_name = $lastName;
+		$parent -> email = $email;
+
+		// Encrypt password with hash
+		$parent -> password = Hash::make($password);
+
+		// Attemp to save parent into DB
+		$result = $parent -> save();
+
+		// If attemp was success
+		if($result)
+		{
+			$data = ['username' => $username, 'first_name' => $firstName, 'last_name' => $lastName, 'school_id' => $schoolID];
+			// Server successfully created the parent
+			Mail::send('emails.confirmation', $data, function($message) use ($email)
+			{		
+			    $message->from('residenciasqro@gmail.com', 'RAS');
+
+			    $message->to($email)->subject('Your account confirmation');
+			});
+
+			// send email confirmation
+			return 201;
+		}
+
+		// there was a system error
+		return 500;
 	}
 }
 		

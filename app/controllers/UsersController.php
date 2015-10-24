@@ -19,8 +19,7 @@ class UsersController extends \BaseController {
 	 * @return Response
 	 */
 	public function create()
-	{
-		//
+	{	
 	}
 
 
@@ -81,6 +80,4 @@ class UsersController extends \BaseController {
 	{
 		//
 	}
-
-
 }

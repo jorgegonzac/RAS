@@ -415,12 +415,36 @@ class ServiceRAS implements ServiceRASInterface
 	}
 
 	/**
+	 * Get user instance by his id
+	 * @param  [int] $id Id of the wanted user
+	 * @return [User]     An instance to the user
+	 */
+	public function getUser($id)
+	{
+		$user = User::find($id);
+
+		return $user;
+	}
+
+	/**
 	 * Get all the tickets
 	 * @return [array] An array with all the tickets instances
 	 */
 	public function getTickets()
 	{
 		$tickets = Ticket::all();
+
+		return $tickets;
+	}
+
+	/**
+	 * Get the tickets from a given username
+	 * @param  [string] $userID The user's ID of the student (who belongs the tickets)
+	 * @return [array]           An array with the associated tickets
+	 */
+	public function getTicketsByUserID($userID)
+	{
+		$tickets = Ticket::where('user_id', '=', $userID)->get();
 
 		return $tickets;
 	}

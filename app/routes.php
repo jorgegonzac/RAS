@@ -40,3 +40,8 @@ Route::post('adminTickets', ['before' => 'auth', 'uses' => 'TicketsController@st
 Route::get('createAccount', ['uses' => 'ParentsController@createAccount']);
 
 Route::post('createAccount', ['uses' => 'ParentsController@storeAccount']);
+
+Route::get('mySonTickets', ['before' => 'auth', 'uses' => 'ParentsController@showTickets']);
+
+Route::get('mySonDReports', ['before' => 'auth', 'uses' => 'ParentsController@showDReports']);
+

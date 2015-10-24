@@ -7,11 +7,23 @@
     <title>Residence Attendance System</title>
 
     <!-- Bootstrap CSS served from a CDN -->
-    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.0/superhero/bootstrap.min.css"
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css"
           rel="stylesheet">
 
+    <!-- More themes at https://www.bootstrapcdn.com/bootswatch/-->
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- Bootstrap JS-->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="../../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Datatable files -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs/jqc-1.11.3,dt-1.10.9,fc-3.1.0,r-1.0.7,sc-1.3.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs/jqc-1.11.3,dt-1.10.9,fc-3.1.0,r-1.0.7,sc-1.3.0/datatables.min.js"></script>
 
     <style>
     body{
@@ -42,14 +54,27 @@
       margin-top: 60px;
     }
 
+
     </style>
   </head>
 
   <body>
-    @include('includes.studentHeader')
+    @include('includes.parentHeader')
 
     <div class="container">
       @yield('content')
     </div>
+
+    <!-- script to start datatable-->
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            // start the datatable
+            $('#table').DataTable();
+        } );
+
+    </script>
+
+
   </body>
 </html>

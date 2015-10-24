@@ -473,6 +473,17 @@ class ServiceRAS implements ServiceRASInterface
 	}
 
 	/**
+	 * Get disciplinary reports using user id
+	 * @return [array] [an array with the disciplinary reports]
+	 */
+	public function getDReportsByUserID($id)
+	{
+		$dReports = Report::where('user_id', '=', $id)->get();
+
+		return $dReports;
+	}
+
+	/**
 	 * Creat a disciplinary report with the given data
 	 * @param  [string] $username    The username of the student who belongs the report
 	 * @param  [string] $description A description of what the studen did and was against the resident hall laws

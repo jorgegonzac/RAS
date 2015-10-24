@@ -18,10 +18,10 @@
                         <a href="mySonTickets"><i class="fa fa-fw fa-check-square-o"></i> Tickets</a>
                     </li>
                     <li>
-                        <a href="mySonReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
+                        <a href="mySonDReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> My information</a>
+                        <a href="myInfo"><i class="fa fa-fw fa-user"></i> My information</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

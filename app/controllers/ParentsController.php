@@ -23,7 +23,17 @@ class ParentsController extends \BaseController
 	 */
 	public function home()
 	{
-		//
+		// Check for user authorization
+		if(Session::get('role') == 3)
+		{
+			// return index view
+			return View::make('parent.index');
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}			
 	}
 
 
@@ -34,17 +44,29 @@ class ParentsController extends \BaseController
 	 */
 	public function showDReports()
 	{
-		//
 	}
 
 	/**
-	 * Display attendances 
+	 * Display son's tickets 
 	 *
 	 * @return view
 	 */
-	public function showAttendance()
-	{
-		//
+	public function showTickets()
+	{		
+		// Check for user authorization
+		if(Session::get('role') == 3)
+		{
+			// Get tickets using son's id
+			$tickets = $this->serviceRAS->getTicketsByUserID(Auth::user()->user_id);
+
+			// return view with the tickets
+			return View::make('parent.tickets')->with(['tickets' => $tickets]);						
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}		
 	}
 
 	/**

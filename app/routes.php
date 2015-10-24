@@ -36,3 +36,7 @@ Route::get('takeAttendance', ['before' => 'auth', 'as' => 'takeAttendance', 'use
 Route::post('saveAttendance', ['before' => 'auth', 'uses' => 'TicketsController@saveAttendanceList']);
 
 Route::post('adminTickets', ['before' => 'auth', 'uses' => 'TicketsController@storeTicket']);
+
+Route::get('createAccount', ['uses' => 'ParentsController@createAccount']);
+
+Route::post('createAccount', ['uses' => 'ParentsController@storeAccount']);

@@ -396,7 +396,7 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket = Ticket::find($id);
 
 		// Check that ticket exist
-		if(empty($ticket[0]))
+		if(empty($ticket))
 		{
 			// return Resource not found
 			return 404;

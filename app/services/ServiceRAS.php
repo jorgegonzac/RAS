@@ -9,6 +9,7 @@ use DB;
 use Report;
 use Mail;
 use Role;
+use Excel;
 include("PopService.php");
 
 
@@ -804,6 +805,48 @@ class ServiceRAS implements ServiceRASInterface
 			// Something went wrong
 			return 500;
 		}		
+	}
+
+	/**
+	 * Import excel to DB
+	 * @param  [string] $path the path of the list
+	 * @return [int]       A final status code of the process
+	 */
+	public function importStudents($path)
+	{
+		Excel::load($path, function($reader) {
+		  	// Getting all results
+		    $students = $reader->get()->toArray();
+
+		    foreach ($students as $student) 
+		    {
+		    	// get data from student row
+		    	$username = $student['username'];
+		    	$firstName = $student['first_name'];
+		    	$lastName = $student['last_name'];
+		    	$career = $student['career'];
+		    	$roomNumber = $student['room_number'];
+
+		    	// check if user is already registered		    	
+				$user = User::where('username', '=', $username)->get();
+				
+				// If does not exists then store it
+				if(empty($user[0]))
+				{
+			    	// call method to create student
+			    	$response = $this->createStudent($username, $firstName, $lastName, $career, $roomNumber);
+
+			    	// if there was an error system, return 500
+			    	if($response == 500)
+			    	{
+			    		return 500;
+			    	}
+				}
+		    }
+		});
+
+	    // If reach this point, then everything was ok
+	    return 200;
 	}
 
 	/**

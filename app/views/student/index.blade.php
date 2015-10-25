@@ -1,1 +1,0 @@
-/Users/jorgegonzac/Documents/SAD/RAS/app/views/student/index.blade.php

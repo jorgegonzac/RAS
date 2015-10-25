@@ -51,6 +51,10 @@ Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParen
 
 Route::resource('students','StudentsController');
 
+Route::get('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@importStudents']);
+
+Route::post('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@storeStudents']);
+
 Route::resource('assistants','AssistantsController');
 
 Route::resource('parents','ParentsController');

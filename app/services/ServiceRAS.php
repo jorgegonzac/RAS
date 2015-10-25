@@ -659,7 +659,17 @@ class ServiceRAS implements ServiceRASInterface
 		if(empty($son[0]))
 		{
 			return 412;
-		}		
+		}	
+
+		// check that username does not already exist
+		$user = User::where('username', '=', $username)->get();
+
+		// If username already exists
+		if(!empty($user[0]))
+		{
+			// return conflict code
+			return 409;
+		}	
 
 		// Creat parent instance
 		$parent = new User();

@@ -14,6 +14,7 @@ interface ServiceRASInterface
 	public function getTicket($id);
 	public function getTicketsByUserID($userID);	
 	public function getUser($id);
+	public function getUsersByRole($role);
 	public function adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut);
 	public function getDReports();
 	public function getDReport($id);
@@ -22,4 +23,7 @@ interface ServiceRASInterface
 	public function updateDReport($id, $username, $description, $date);
 	public function deleteDReport($id);
 	public function createParent($username, $schoolID, $firstName, $lastName, $email, $password);
+	public function createStudent($username, $firstName, $lastName, $career, $roomNumber);
+	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);
+	public function deleteUser($id);
 }

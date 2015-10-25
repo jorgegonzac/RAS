@@ -1,6 +1,18 @@
 <?php
+use services\ServiceRASInterface;
 
-class AdminsController extends \BaseController {
+class AdminsController extends \BaseController 
+{
+	public $serviceRAS;
+
+	/**
+	 * Inject an instance of the serviceRasInterface into the controller
+	 * @param ServiciceRASInterface $serviceRAS [instance of the service]
+	 */
+    public function __construct(ServiceRASInterface $serviceRAS)
+     {
+        $this->serviceRAS = $serviceRAS; 
+     }
 
 	/**
 	 * Display home view.
@@ -22,15 +34,24 @@ class AdminsController extends \BaseController {
 	}
 
 	/**
-	 * Display users
+	 * Display parents
 	 *
 	 * @return view
 	 */
-	public function showUsers()
+	public function showParents()
 	{
 		//
 	}
 
+	/**
+	 * Display resident assistants
+	 *
+	 * @return view
+	 */
+	public function showAssistants()
+	{
+		//
+	}
 	/**
 	 * Display disciplinary reports
 	 *

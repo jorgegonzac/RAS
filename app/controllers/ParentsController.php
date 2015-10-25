@@ -140,7 +140,6 @@ class ParentsController extends \BaseController
 			'schoolID' => 'required|max:9|regex:/^[A a L l]\d{8}/',
 			'firstName' => 'required|max:20',
 			'lastName' => 'required|max:20',
-			'lastName' => 'required|max:20',
 			'email' => 'required|email',
 			'password' => 'required',
 			'passwordConfirm' => 'required',

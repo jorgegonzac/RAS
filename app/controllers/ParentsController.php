@@ -183,6 +183,13 @@ class ParentsController extends \BaseController
 			return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
 		        ->withInput(Input::all());				
+		}
+		elseif($response == 409)
+		{
+			$errors = 'That username already exist';
+			return Redirect::to('createAccount')
+		        ->withErrors($errors) // send back all errors to the  form
+		        ->withInput(Input::all());				
 		}	
 	
 		// The system had an error
@@ -301,6 +308,13 @@ class ParentsController extends \BaseController
 			elseif($response == 412)
 			{
 				$errors = 'The school id is not registered in the system';
+				return Redirect::to('parents/create')
+			        ->withErrors($errors) // send back all errors to the  form
+			        ->withInput(Input::all());				
+			}
+			elseif($response == 409)
+			{
+				$errors = 'That username already exist';
 				return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				

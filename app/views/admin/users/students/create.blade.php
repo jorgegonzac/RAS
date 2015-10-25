@@ -67,10 +67,10 @@
 
           <ol class="breadcrumb">
             <li>
-              <i class="fa fa-dashboard"></i>  <a href="../students">Students</a>
+              <i class="fa fa-users"></i>  <a href="../students">Students</a>
             </li>
             <li class="active">
-              <i class="fa fa-file"></i> Create Student
+              <i class="fa fa-file"></i> Create student
             </li>
           </ol>
 

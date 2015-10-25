@@ -5,7 +5,7 @@
   <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
-        <h3>Create Resident Assistant</h3>
+        <h3>Create New Resident Assistant</h3>
       </div>
       <div class="panel-body">
         <br>
@@ -58,10 +58,10 @@
 
           <ol class="breadcrumb">
             <li>
-              <i class="fa fa-dashboard"></i>  <a href="../assistants">Resident Assistants</a>
+              <i class="fa fa-users"></i>  <a href="../assistants">Resident Assistants</a>
             </li>
             <li class="active">
-              <i class="fa fa-file"></i> Create Resident Assistant
+              <i class="fa fa-file"></i> Create resident assistant
             </li>
           </ol>
 

@@ -84,7 +84,7 @@
 	                <i class="fa fa-dashboard"></i>  <a href="../admin">Dashboard</a>
 	        </li>
 			<li class="active">
-				<i class="fa fa-file"></i> Show tickets
+				<i class="fa fa-file"></i> Show students
 	        </li>
 	    </ol>
 </div>

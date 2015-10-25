@@ -79,10 +79,10 @@
                         <a href="../../takeAttendance"><i class="fa fa-fw fa-list-ol"></i> Take Attendance</a>
                     </li>
                     <li>
-                        <a href="../../tickets"><i class="fa fa-fw fa-list-ol"></i> Tickets</a>
+                        <a href="../../tickets"><i class="fa fa-fw fa-edit"></i> Tickets</a>
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Reports </a>
+                        <a href="../../dReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
@@ -97,9 +97,6 @@
                                 <a href="../../parents">Parents</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="../../dReports"><i class="fa fa-fw fa-edit"></i> Disciplinary Reports</a>
                     </li>
                     <li>
                         <a href="bootstrap-elements.html"><i class="fa fa-fw fa-cogs"></i> Settings </a>
@@ -182,25 +179,25 @@
                 } );   
 
         // start datetime picker date (reports)
-            var $fp2 = $( ".date" );
+            var $fp3 = $( ".date" );
 
             // Set the minimun date time that will be available
-            $fp2.filthypillow( {
+            $fp3.filthypillow( {
                 minDateTime: function( ) {
                 return moment( ).subtract( "days", 200 ); //now
             }   
 
             // Show datatime picker when focus
             } );
-            $fp2.on( "focus", function( ) {
-                $fp2.filthypillow( "show" );
+            $fp3.on( "focus", function( ) {
+                $fp3.filthypillow( "show" );
                 } );
 
             // Set datatime format
-            $fp2.on( "fp:save", function( e, dateObj ) {
+            $fp3.on( "fp:save", function( e, dateObj ) {
 
-                $fp2.filthypillow( "hide" );
-                $fp2.val( dateObj.format( "YYYY-MM-DD HH:mm:ss" ) );
+                $fp3.filthypillow( "hide" );
+                $fp3.val( dateObj.format( "YYYY-MM-DD HH:mm:ss" ) );
                 } );           
         } );
     </script>

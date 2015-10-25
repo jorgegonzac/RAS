@@ -300,7 +300,7 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket = Ticket::find($id);
 		
 		// Check if ticket exist in DB
-		if(empty($ticket[0]))
+		if(empty($ticket))
 		{
 			// Return 'resource not found'
 			return 404;
@@ -821,12 +821,18 @@ class ServiceRAS implements ServiceRASInterface
 			// precondition failed, user must be registered in the system
 			return 412;
 		}
+	
+		// Get student role reference to detach to user
+		$roleStudent = Role::where('description', '=', 'student')->get();
 
 		// Get resident assistant role reference to assign to user
 		$role = Role::where('description', '=', 'resident assistant')->get();
 
 		try
 		{
+			// Attemp to delete student role
+			$user[0]->roles()->detach($roleStudent[0]->id);
+
 			// Associate role to user
 			$user[0]->roles()->attach($role[0]);
 			
@@ -901,8 +907,30 @@ class ServiceRAS implements ServiceRASInterface
 
 		try
 		{
+			// Delete all associated tickets
+			DB::table('tickets')->where('user_id', $id)->delete();
+
+			// Delete all associated dReports
+			DB::table('reports')->where('user_id', $id)->delete();
+
+			// Delete all associated users_roles
+			DB::table('users_roles')->where('user_id', $id)->delete();
+
+			// Delete parent
+			$parent = User::where('user_id', '=', $id)->get();
+
+			if(!empty($parent[0]))
+			{				
+				// Delete all associated users_roles
+				DB::table('users_roles')->where('user_id', $parent[0]->id)->delete();
+
+				DB::table('users')->where('user_id', $id)->delete();			
+			}
+
+			DB::commit();
+
 			// Attemp to delete
-			$result = $user -> delete();
+			$user -> delete();
 	
 			// Return success code if deletion was succesfull
 			return 204;
@@ -933,10 +961,16 @@ class ServiceRAS implements ServiceRASInterface
 		// Get resident assistant role reference 
 		$role = Role::where('description', '=', 'resident assistant')->get();
 
+		// Get student role reference to atach to user
+		$roleStudent = Role::where('description', '=', 'student')->get();
+
 		try
 		{
 			// Attemp to delete RA role
 			$user->roles()->detach($role[0]->id);
+
+			// Attemp to add student role
+			$user->roles()->attach($roleStudent[0]);
 	
 			// Return success code if deletion was succesfull
 			return 204;

@@ -11,6 +11,8 @@
 |
 */
 
+/*Login routes: used to provide authentication and handle sessions*/
+
 Route::get('/', 'SessionsController@create');
 
 Route::get('login', 'SessionsController@create');
@@ -19,17 +21,14 @@ Route::post('login', 'SessionsController@authenticate');
 
 Route::get('logout', 'SessionsController@destroy');
 
-Route::resource('users','UsersController');
 
-Route::resource('tickets','TicketsController');
-
-Route::resource('dReports','DReportsController');
-
-Route::get('student', ['before' => 'auth', 'uses' => 'StudentsController@home']);
-
-Route::get('parent', ['before' => 'auth', 'uses' => 'ParentsController@home']);
+/* Admin routes */
 
 Route::get('admin', ['before' => 'auth', 'uses' => 'AdminsController@home']);
+
+/* Tickets routes */
+
+Route::resource('tickets','TicketsController');
 
 Route::get('takeAttendance', ['before' => 'auth', 'as' => 'takeAttendance', 'uses' => 'TicketsController@showAttendanceList']);
 
@@ -37,26 +36,36 @@ Route::post('saveAttendance', ['before' => 'auth', 'uses' => 'TicketsController@
 
 Route::post('adminTickets', ['before' => 'auth', 'uses' => 'TicketsController@storeTicket']);
 
-Route::get('createAccount', ['uses' => 'ParentsController@createAccount']);
+/* Disciplinary Reports routes */
 
-Route::post('createAccount', ['uses' => 'ParentsController@storeAccount']);
+Route::resource('dReports','DReportsController');
+
+/* Parents routes */
+
+Route::resource('parents','ParentsController');
+
+Route::get('parent', ['before' => 'auth', 'uses' => 'ParentsController@home']);
 
 Route::get('mySonTickets', ['before' => 'auth', 'uses' => 'ParentsController@showTickets']);
 
 Route::get('mySonDReports', ['before' => 'auth', 'uses' => 'ParentsController@showDReports']);
 
+Route::get('createAccount', ['uses' => 'ParentsController@createAccount']);
+
+Route::post('createAccount', ['uses' => 'ParentsController@storeAccount']);
+
 Route::get('myInfo', ['before' => 'auth', 'uses' => 'ParentsController@showMyInfo']);
 
-Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParents']);
+/* Student routes */
 
 Route::resource('students','StudentsController');
+
+Route::get('student', ['before' => 'auth', 'uses' => 'StudentsController@home']);
 
 Route::get('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@importStudents']);
 
 Route::post('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@storeStudents']);
 
+/* Resident Assistant routes */
+
 Route::resource('assistants','AssistantsController');
-
-Route::resource('parents','ParentsController');
-
-

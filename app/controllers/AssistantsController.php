@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class AssistantsController extends \BaseController 
 {
+	// Service instance
 	public $serviceRAS;
 
 	/**
@@ -13,12 +14,11 @@ class AssistantsController extends \BaseController
      {
         $this->serviceRAS = $serviceRAS; 
      }
-	
 
 	/**
 	 * Display a listing of the resident assistants.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function index()
 	{
@@ -28,21 +28,20 @@ class AssistantsController extends \BaseController
 			// Call service and get users by role = resident assistant
 			$users = $this->serviceRAS->getUsersByRole('resident assistant');
 
-			// return view with the tickets
+			// return view with the users
 			return View::make('admin.users.assistants.index')->with(['users' => $users]);						
 		}
 		else
 		{
-			// Authenticated user does not have authorization to enter
+			// Authenticated user does not have authorization to enter, redirect to login
 			return Redirect::to('login');
 		}	
 	}
 
-
 	/**
 	 * Show the form for creating a new resident assistant.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function create()
 	{
@@ -53,16 +52,15 @@ class AssistantsController extends \BaseController
 		}
 		else
 		{
-			// Authenticated user does not have authorization to enter
+			// Authenticated user does not have authorization to enter, redirect to login
 			return Redirect::to('login');
 		}	
 	}
 
-
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created resident assistant in storage.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function store()
 	{
@@ -72,12 +70,12 @@ class AssistantsController extends \BaseController
 			// Get form data
 			$username = Input::get('username');
 
-			// validate the info, create rules for the inputs
+			// Validate the info, create rules for the inputs
 			$rules = array(
 				'username' => 'required|max:9|regex:/^[A a L l]\d{8}/',
 			);
 
-			// run the validation rules on the inputs from the form
+			// Run the validation rules on the inputs from the form
 			$validator = Validator::make(Input::all(), $rules);
 
 			// if the validator fails, redirect back to the form
@@ -88,12 +86,13 @@ class AssistantsController extends \BaseController
 			        ->withInput(Input::all()); // send back the input so that we can repopulate the form
 			}
 
-			// Call the service to create student
+			// Call the service to store student
 			$response = $this->serviceRAS->createAssistant($username);		
 
-			// Return a view with the message
+			// storing was success
 			if($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The student is now a Resident Assistant';
 				Session::flash('success', $success);
 
@@ -101,6 +100,7 @@ class AssistantsController extends \BaseController
 			}
 			elseif($response == 404)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student is not registered in the system';
 
 				return Redirect::to('assistants/create')
@@ -109,6 +109,7 @@ class AssistantsController extends \BaseController
 			}	
 			elseif($response == 409)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student is already a Resident Assistant';
 
 				return Redirect::to('assistants/create')
@@ -116,7 +117,7 @@ class AssistantsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 
 			return Redirect::to('assistants/create')
@@ -130,47 +131,10 @@ class AssistantsController extends \BaseController
 		}	
 	}
 
-
 	/**
-	 * Display the specified resource.
+	 * Remove the specified resident assistant from storage.
 	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified assistant from storage.
-	 *
-	 * @param  int  $id
+	 * @param  int  $id assistant id
 	 * @return Response
 	 */
 	public function destroy($id)
@@ -181,15 +145,18 @@ class AssistantsController extends \BaseController
 			// Call the service to delete user
 			$response = $this->serviceRAS->deleteAssistant($id);
 
-			// Return a view with the message
+			// Deletion was successfull
 			if($response == 204)
 			{
+				// redirect to previous route with success msg
 				$success = 'The resident assistant was deleted';
 				Session::flash('success', $success);
 
 				return Redirect::action('AssistantsController@index');	
-			}elseif($response == 404)
+			}
+			elseif($response == 404)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student does not exist';
 				
 				return Redirect::to('assistants')
@@ -197,7 +164,7 @@ class AssistantsController extends \BaseController
 			        ->withInput(Input::all());				
 			}
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 			return Redirect::to('assistants')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -209,6 +176,4 @@ class AssistantsController extends \BaseController
 			return Redirect::to('login');
 		}			
 	}
-
-
 }

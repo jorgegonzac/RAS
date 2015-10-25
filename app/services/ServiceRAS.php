@@ -31,7 +31,7 @@ class ServiceRAS implements ServiceRASInterface
 			return -1;
 		}
 
-		// Get Rol
+		// Get user rol
 		$roles = $user[0]->roles;
 		$rol = $roles[0]->id;
 
@@ -48,6 +48,7 @@ class ServiceRAS implements ServiceRASInterface
 				$popServer = 'pop.itesm.mx';
 				$auth = auth_pop3_ssl($username, $password, $popServer);
 
+				// user was authenticated by itesm
 				if($auth)
 				{
 					// Authenticate the user into the system
@@ -65,7 +66,7 @@ class ServiceRAS implements ServiceRASInterface
 			case 3:
 			case 4:
 				// Parent - Admin
-
+				// check credentials in DB
 				if(Auth::attempt(['username' => $username, 'password' => $password]))
 				{
 					// Authenticate the user into the system
@@ -111,6 +112,7 @@ class ServiceRAS implements ServiceRASInterface
 			return null;
 		}
 
+		// return ticket
 		return $openTicket;
 	}	
 
@@ -178,9 +180,11 @@ class ServiceRAS implements ServiceRASInterface
 		// check that there were no errors while saving
 		if($response)
 		{
+			// return 202
 			return $responseCode;
 		}
 
+		// there was an error
 		return 500;
 	}
 
@@ -225,9 +229,11 @@ class ServiceRAS implements ServiceRASInterface
 		// check that there were no errors while saving
 		if($response)
 		{
+			// resource was created
 			return 201;
 		}
 
+		// there was an error 
 		return 500;
 	}
 
@@ -238,22 +244,22 @@ class ServiceRAS implements ServiceRASInterface
 	 * @param  [string] $phone    [phone of the user of the ticket]
 	 * @param  [int] $type     [type of ticket. 1:local, 2:foreign, 3:absence, 4:out of time]
 	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
-	 * @return [type]           [description]
+	 * @return [int]           final status code of the process
 	 */
 	public function adminCreatesTicket($username, $place, $phone, $type, $checkIn, $checkOut)
 	{
 		// Check if username exists 
 		$user = User::where('username', '=', $username)->get();
 
-		// If username doesn't exist, return error 'precondition failed'
+		// If username doesn't exist
 		if(empty($user[0]))
 		{
+			// return error 'precondition failed'
 			return 412;
 		}
 		
 		// New ticket reference
 		$ticket = new Ticket();
-
 
 		// Fill ticket with he given data
 		$ticket -> place = $place;
@@ -268,11 +274,14 @@ class ServiceRAS implements ServiceRASInterface
 		// save ticket in DB
 		$response = $ticket -> save();
 
+		// if storing was succesfull
 		if($response)
 		{
+			// return resource created
 			return 201;
 		}
 
+		// there was an error
 		return 500;
 	}
 
@@ -284,7 +293,7 @@ class ServiceRAS implements ServiceRASInterface
 	 * @param  [string] $phone    [phone of the user of the ticket]
 	 * @param  [int] $type     [type of ticket. 1:local, 2:foreign, 3:absence, 4:out of time]
 	 * @param  [date] $checkIn  [The date when the ticket was created. If no $checkin is passed, NOW() date will be used. FORMAT: YYYY-MM-DD hh:mm:ss]
-	 * @return [type]           [description]
+	 * @return [int]           final status code of process
 	 */
 	public function adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut)
 	{
@@ -312,20 +321,27 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket -> phone = $phone;
 		$ticket -> type = $type;
 
+		// if checkin was not provided
 		if(!$checkIn)
 		{
+			// set checkin to null
 			$ticket -> check_in = null;			
 		}
 		else
 		{
+			// set ticket checkin with provided data
 			$ticket -> check_in = $checkIn;			
 		}
+
+		// if checout was not provided
 		if(!$checkOut)
 		{
+			// set ticket's checkout to null
 			$ticket -> check_out = null;			
 		}
 		else
 		{
+			// set ticket's checkout to the one provided
 			$ticket -> check_out = $checkOut;			
 		}
 
@@ -341,13 +357,14 @@ class ServiceRAS implements ServiceRASInterface
 			return 200;
 		}
 
+		// there was an error
 		return 500;
 	}
 
 	/**
 	 * gets the attendance list of the given floor. 
 	 * @param  [integer] 	 The floor of the wanted list. Values: 100,200,300,400
-	 * @return [array]        The list of the given floor
+	 * @return [array]        an array of students
 	 */
 	public function getAttendanceList($floor)
 	{
@@ -358,6 +375,7 @@ class ServiceRAS implements ServiceRASInterface
 		$users = User::where('room_number', '>=', $floor)
 				   	->where('room_number', '<', $nextFloor)->get();
 		
+		// create list instance
 		$list = array();
 
 		// for each user, get the important information in order to push it to the list and the return it
@@ -440,7 +458,6 @@ class ServiceRAS implements ServiceRASInterface
 		{
     		$q->where('roles.description', $role);
 		})->get();
-
 
 		return $users;
 	}
@@ -824,7 +841,8 @@ class ServiceRAS implements ServiceRASInterface
 	 */
 	public function importStudents($path)
 	{
-		Excel::load($path, function($reader) {
+		Excel::load($path, function($reader) 
+		{
 		  	// Getting all results
 		    $students = $reader->get()->toArray();
 

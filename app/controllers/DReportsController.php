@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class DReportsController extends \BaseController 
 {
+	// Service instance
 	public $serviceRAS;
 
 	/**
@@ -17,7 +18,7 @@ class DReportsController extends \BaseController
 	/**
 	 * Display a listing of the Disciplinary Report.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function index()
 	{
@@ -27,6 +28,7 @@ class DReportsController extends \BaseController
 			// Call service and get the dReports
 			$dReports = $this->serviceRAS->getDReports();
 
+			// return view with data
 			return View::make('admin.dReports.index')->with('dReports', $dReports);			
 		}
 		else
@@ -36,17 +38,17 @@ class DReportsController extends \BaseController
 		}		
 	}
 
-
 	/**
 	 * Show the form for creating a new Disciplinary Report.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function create()
 	{
 		// Check for user authorization
 		if(Session::get('role')==4)
 		{
+			// return form
 			return View::make('admin.dReports.create');			
 		}
 		else
@@ -56,11 +58,10 @@ class DReportsController extends \BaseController
 		}	
 	}
 
-
 	/**
 	 * Store a newly created Disciplinary Report in storage.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function store()
 	{
@@ -93,8 +94,10 @@ class DReportsController extends \BaseController
 			// Call the service to create dReport
 			$response = $this->serviceRAS->createDReport($username, $description, $date);	
 
+			// storing was succesfull
 			if($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The Disciplinary Report was created';
 				Session::flash('success', $success);
 
@@ -102,6 +105,7 @@ class DReportsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The username does not exist in the database.';
 
 				return Redirect::to('dReports/create')
@@ -109,7 +113,7 @@ class DReportsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error. Try again.';
 
 			return Redirect::to('dReports/create')
@@ -123,24 +127,11 @@ class DReportsController extends \BaseController
 		}
 	}
 
-
-	/**
-	 * Display the specified Disciplinary Report.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
 	/**
 	 * Show the form for editing the specified Disciplinary Report.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  [int]  $id disciplinary report id
+	 * @return [view]
 	 */
 	public function edit($id)
 	{
@@ -159,12 +150,11 @@ class DReportsController extends \BaseController
 		}	
 	}
 
-
 	/**
 	 * Update the specified Disciplinary Report in storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return view
 	 */
 	public function update($id)
 	{
@@ -197,8 +187,10 @@ class DReportsController extends \BaseController
 			// Call the service to create dReport
 			$response = $this->serviceRAS->updateDReport($id, $username, $description, $date);	
 
+			// update was successfull
 			if($response == 200)
 			{
+				// redirect to previous route with success msg
 				$success = 'The Disciplinary Report was updated';
 				Session::flash('success', $success);
 
@@ -206,6 +198,7 @@ class DReportsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The username does not exist in the database.';
 
 			    return Redirect::to('dReports/' . $id . '/edit')
@@ -213,12 +206,12 @@ class DReportsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error. Try again.';
 
-			    return Redirect::to('dReports/' . $id . '/edit')
-			        ->withErrors($errors) // send back all errors to the  form
-			        ->withInput(Input::all());					
+		    return Redirect::to('dReports/' . $id . '/edit')
+		        ->withErrors($errors) // send back all errors to the  form
+		        ->withInput(Input::all());					
 		}
 		else
 		{
@@ -227,12 +220,11 @@ class DReportsController extends \BaseController
 		}
 	}
 
-
 	/**
 	 * Remove the specified Disciplinary Report from storage.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  [int]  $id disciplinary report id
+	 * @return view
 	 */
 	public function destroy($id)
 	{
@@ -242,18 +234,21 @@ class DReportsController extends \BaseController
 			// Call service and get response code
 			$response = $this->serviceRAS->deleteDReport($id);
 
-			// Save msg in session according to response code;
+			// deleting was success
 			if($response == 204)
 			{
+				// save success msg in session
 				$success = 'The disciplinary report was deleted';
 				Session::flash('success', $success);
 			}
 			elseif($response == 404)
 			{
+				// save error msg in session
 				$errors = 'The disciplinary report does not exist';
 				Session::flash('errors', $errors);
 			}
 			else{
+				// save error msg in session
 				$errors = 'There was an error while deleting, try again';
 				Session::flash('errors', $errors);
 			}
@@ -267,6 +262,4 @@ class DReportsController extends \BaseController
 			return Redirect::to('login');			
 		}
 	}
-
-
 }

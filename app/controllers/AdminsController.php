@@ -1,19 +1,7 @@
 <?php
-use services\ServiceRASInterface;
 
 class AdminsController extends \BaseController 
 {
-	public $serviceRAS;
-
-	/**
-	 * Inject an instance of the serviceRasInterface into the controller
-	 * @param ServiciceRASInterface $serviceRAS [instance of the service]
-	 */
-    public function __construct(ServiceRASInterface $serviceRAS)
-     {
-        $this->serviceRAS = $serviceRAS; 
-     }
-
 	/**
 	 * Display home view.
 	 *
@@ -28,57 +16,8 @@ class AdminsController extends \BaseController
 		}
 		else
 		{
-			// Authenticated user does not have authorization to enter
+			// Authenticated user does not have authorization to enter, redirect to login
 			return Redirect::to('login');
 		}		
-	}
-
-	/**
-	 * Display parents
-	 *
-	 * @return view
-	 */
-	public function showParents()
-	{
-		//
-	}
-
-	/**
-	 * Display resident assistants
-	 *
-	 * @return view
-	 */
-	public function showAssistants()
-	{
-		//
-	}
-	/**
-	 * Display disciplinary reports
-	 *
-	 * @return view
-	 */
-	public function showDReports()
-	{
-		//
-	}
-
-	/**
-	 * Display tickets
-	 *
-	 * @return view
-	 */
-	public function showTickets()
-	{
-		//
-	}
-
-	/**
-	 * Display attendance view 
-	 *
-	 * @return view
-	 */
-	public function takeAttendance()
-	{
-		//
 	}
 }

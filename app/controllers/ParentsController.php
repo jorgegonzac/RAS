@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class ParentsController extends \BaseController 
 {	
+	// Service instance
 	public $serviceRAS;
 
 	/**
@@ -13,8 +14,6 @@ class ParentsController extends \BaseController
      {
         $this->serviceRAS = $serviceRAS; 
      }
-
-
 
 	/**
 	 * Display home view.
@@ -156,9 +155,10 @@ class ParentsController extends \BaseController
 		        ->withInput(Input::all()); // send back the input so that we can repopulate the form
 		}
 
-		// if passwords doesn't match, redirect back to the form
+		// Passwords doesn't match
 		if($password != $passwordConfirm)
 		{
+			// redirect to previous route with error msg
 			$errors = 'The passwords doesnt match';
 
 		    return Redirect::to('createAccount')
@@ -169,9 +169,10 @@ class ParentsController extends \BaseController
 		// Call the service to create ticket
 		$response = $this->serviceRAS->createParent($username, $schoolID, $firstName, $lastName, $email, $password);		
 
-		// Return a view with the message
+		// storing was successfull
 		if($response == 201)
 		{
+			// redirect to previous route with success msg
 			$success = 'The account was created. An email was sent with information';
 			Session::flash('success', $success);
 
@@ -179,28 +180,33 @@ class ParentsController extends \BaseController
 		}
 		elseif($response == 412)
 		{
+			// redirect to previous route with error msg
 			$errors = 'The school id is not registered in the system';
+
 			return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
 		        ->withInput(Input::all());				
 		}
 		elseif($response == 409)
 		{
+			// redirect to previous route with error msg
 			$errors = 'That username already exist';
+
 			return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
 		        ->withInput(Input::all());				
 		}	
 	
-		// The system had an error
+		// redirect to previous route with error msg
 		$errors = 'There was an error';
+
 		return Redirect::to('student')
 		        ->withErrors($errors) // send back all errors to the  form
 		        ->withInput(Input::all());					
 	}
 
 	/**
-	 * Display a listing of the resident assistants.
+	 * Display a listing of the parents.
 	 *
 	 * @return Response
 	 */
@@ -222,11 +228,10 @@ class ParentsController extends \BaseController
 		}	
 	}
 
-
 	/**
-	 * Show the form for creating a new resident assistant.
+	 * Show the form for creating a new parent.
 	 *
-	 * @return Response
+	 * @return view
 	 */
 	public function create()
 	{
@@ -242,9 +247,8 @@ class ParentsController extends \BaseController
 		}	
 	}
 
-
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created parent in storage.
 	 *
 	 * @return Response
 	 */
@@ -284,9 +288,10 @@ class ParentsController extends \BaseController
 			        ->withInput(Input::all()); // send back the input so that we can repopulate the form
 			}
 
-			// if passwords doesn't match, redirect back to the form
+			// passwords doesn't match
 			if($password != $passwordConfirm)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The passwords doesnt match';
 
 			    return Redirect::to('parents/create')
@@ -297,9 +302,10 @@ class ParentsController extends \BaseController
 			// Call the service to create ticket
 			$response = $this->serviceRAS->createParent($username, $schoolID, $firstName, $lastName, $email, $password);		
 
-			// Return a view with the message
+			// storing was successfull
 			if($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The account was created. An email was sent with information';
 				Session::flash('success', $success);
 
@@ -307,20 +313,24 @@ class ParentsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The school id is not registered in the system';
+
 				return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				
 			}
 			elseif($response == 409)
 			{
+				// redirect to previous route with error msg
 				$errors = 'That username already exist';
+
 				return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 			return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -334,32 +344,23 @@ class ParentsController extends \BaseController
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
-	/**
 	 * Show the form for editing the specified parent.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  int  $id parents id
+	 * @return view
 	 */
 	public function edit($id)
 	{		
 		// Check for user authorization
 		if(Session::get('role') == 4)
 		{
-			// Call service to get user by his id
+			// Call service to get parent by his id
 			$user = $this->serviceRAS->getUser($id);
+
+			// Call service to get parent's son by his id
 			$son = $this->serviceRAS->getUser($user->user_id);
 
+			// return view with parent and son data
 			return View::make('admin.users.parents.edit')->with(['user' => $user, 'son' => $son]);						
 		}
 		else
@@ -369,12 +370,11 @@ class ParentsController extends \BaseController
 		}
 	}
 
-
 	/**
 	 * Update the specified parent in storage.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  int  $id parent id
+	 * @return view
 	 */
 	public function update($id)
 	{
@@ -411,9 +411,10 @@ class ParentsController extends \BaseController
 			// Call the service to update ticket
 			$response = $this->serviceRAS->updateParent($id, $username, $schoolID, $firstName, $lastName, $email);		
 
-			// Return a view with the message
+			// udpating was successfull
 			if($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The account was updated';
 				Session::flash('success', $success);
 
@@ -421,6 +422,7 @@ class ParentsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The school id is not registered in the system';
 	
 			    return Redirect::to('parents/' . $id .'/edit')
@@ -428,7 +430,7 @@ class ParentsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 
 		    return Redirect::to('parents/' . $id .'/edit')
@@ -442,11 +444,10 @@ class ParentsController extends \BaseController
 		}	
 	}
 
-
 	/**
 	 * Remove the specified assistant from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $id parent id
 	 * @return Response
 	 */
 	public function destroy($id)
@@ -457,9 +458,10 @@ class ParentsController extends \BaseController
 			// Call the service to delete user
 			$response = $this->serviceRAS->deleteUser($id);
 
-			// Return a view with the message
+			// deletion was successfull
 			if($response == 204)
 			{
+				// redirect to previous route with success msg
 				$success = 'The parent was deleted';
 				Session::flash('success', $success);
 
@@ -467,6 +469,7 @@ class ParentsController extends \BaseController
 			}
 			elseif($response == 404)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The parent does not exist';
 				
 				return Redirect::to('parents')
@@ -474,7 +477,7 @@ class ParentsController extends \BaseController
 			        ->withInput(Input::all());				
 			}
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 			
 			return Redirect::to('parents')

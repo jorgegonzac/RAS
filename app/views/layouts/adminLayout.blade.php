@@ -72,34 +72,40 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+
+                    <!-- Set active class according to actual route-->
+                    <li {{ Request::is('*admin*') ? 'class="active"' : '' }} >
                         <a href="../../admin"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
-                    <li>
+
+                    <li {{ Request::is('*takeAttendance*') ? 'class="active"' : '' }} >
                         <a href="../../takeAttendance"><i class="fa fa-fw fa-list-ol"></i> Take Attendance</a>
                     </li>
-                    <li>
+                    
+                    <li {{ Request::is('*tickets*') ? 'class="active"' : '' }} >
                         <a href="../../tickets"><i class="fa fa-fw fa-edit"></i> Tickets</a>
                     </li>
-                    <li>
+                    
+                    <li {{ Request::is('*dReports*') ? 'class="active"' : '' }} >
                         <a href="../../dReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
                     </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
+                    
+                    <li {{ Request::is('*tudents*') || Request::is('*assistants*') || Request::is('*parents*') ? 'class="active"' : '' }} >
+                        <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="users" class="collapse">
+
                             <li>
                                 <a href="../../students">Students</a>
                             </li>
+
                             <li>
                                 <a href="../../assistants">Resident Assistants</a>
                             </li>
+
                             <li>
                                 <a href="../../parents">Parents</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-cogs"></i> Settings </a>
                     </li>
                 </ul>
             </div>
@@ -156,7 +162,7 @@
                 $fp.filthypillow( "hide" );
                 } );   
 
-        // start datetime picker check_out
+            // start datetime picker check_out
             var $fp2 = $( ".check-out" );
 
             // Set the minimun date time that will be available
@@ -178,7 +184,7 @@
                 $fp2.val( dateObj.format( "YYYY-MM-DD HH:mm:ss" ) );
                 } );   
 
-        // start datetime picker date (reports)
+            // start datetime picker date (reports)
             var $fp3 = $( ".date" );
 
             // Set the minimun date time that will be available

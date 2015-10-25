@@ -50,6 +50,87 @@ class StudentsController extends \BaseController
 		}
 	}
 
+	/**
+	 * Display import form
+	 *
+	 * @return view
+	 */
+	public function importStudents()
+	{
+		// Check for user authorization
+		if(Session::get('role') == 4)
+		{
+			// return form view
+			return View::make('admin.users.students.import');				
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}		
+	}
+
+	/**
+	 * store the list of students
+	 *
+	 * @return view
+	 */
+	public function storeStudents()
+	{
+		// Check for user authorization
+		if(Session::get('role') == 4)
+		{
+			// validate the info, create rules for the inputs
+			$rules = array(
+			    'file' => 'required'
+			);
+
+			// run the validation rules on the inputs from the form
+			$validator = Validator::make(Input::all(), $rules);
+
+			// if the validator fails, redirect back to the form
+			if ($validator->fails()) 
+			{
+			    return Redirect::to('importStudents')
+			        ->withErrors($validator) // send back all errors to the  form
+			        ->withInput(Input::all()); // send back the input so that we can repopulate the form
+			}
+
+			// Save file into system
+			$file = Input::file('file');
+			$name = Input::file('file')->getClientOriginalName();
+			$destionationPath = public_path() . '/files/';
+			$success = $file->move($destionationPath, $name);
+
+			// The file was stored
+			if($success)
+			{		
+				// call service to import list
+				$response = $this->serviceRAS->importStudents($destionationPath . $name);
+
+				// If the import was success, return to view with success msg
+				if($response == 200)
+				{
+					$success = 'The students were added';
+
+					Session::flash('success', $success);
+					return Redirect::action('StudentsController@importStudents');						
+				}		
+			}
+
+			// The system had an error
+			$errors = 'There was an error';
+
+			return Redirect::to('importStudents')
+			        ->withErrors($errors) // send back all errors to the  form
+			        ->withInput(Input::all());					
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}		
+	}
 
 	/**
 	 * Display students

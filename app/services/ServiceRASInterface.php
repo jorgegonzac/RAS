@@ -29,4 +29,5 @@ interface ServiceRASInterface
 	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);
 	public function deleteUser($id);	
 	public function deleteAssistant($id);	
+	public function importStudents($path);	
 }

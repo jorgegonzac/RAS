@@ -8,6 +8,7 @@ use Ticket;
 use DB;
 use Report;
 use Mail;
+use Role;
 include("PopService.php");
 
 
@@ -299,7 +300,7 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket = Ticket::find($id);
 		
 		// Check if ticket exist in DB
-		if(empty($ticket))
+		if(empty($ticket[0]))
 		{
 			// Return 'resource not found'
 			return 404;
@@ -394,7 +395,7 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket = Ticket::find($id);
 
 		// Check that ticket exist
-		if(empty($ticket))
+		if(empty($ticket[0]))
 		{
 			// return Resource not found
 			return 404;
@@ -424,6 +425,23 @@ class ServiceRAS implements ServiceRASInterface
 		$user = User::find($id);
 
 		return $user;
+	}
+	
+	/**
+	 * Get users by role number
+	 * @param  [string] $role  The role name of the users to get
+	 * @return [array]       An array with the users
+	 */
+	public function getUsersByRole($role)
+	{
+		// query users that have the given role
+		$users = User::whereHas('roles', function($q) use($role)
+		{
+    		$q->where('roles.description', $role);
+		})->get();
+
+
+		return $users;
 	}
 
 	/**
@@ -586,7 +604,7 @@ class ServiceRAS implements ServiceRASInterface
 		$DReport = Report::find($id);
 
 		// Check that DReport exist
-		if(empty($DReport))
+		if(empty($DReport[0]))
 		{
 			// return Resource not found
 			return 404;
@@ -671,6 +689,127 @@ class ServiceRAS implements ServiceRASInterface
 		}
 
 		// there was a system error
+		return 500;
+	}
+
+	/**
+	 * Creates a new student
+	 * @param  [string] $username   Student username
+	 * @param  [string] $firstName  Student first name
+	 * @param  [string] $lastName   Student last name
+	 * @param  [string] $career     Student career
+	 * @param  [int] $roomNumber Student room number
+	 * @return [int]             A status code of the final state of the process
+	 */
+	public function createStudent($username, $firstName, $lastName, $career, $roomNumber)
+	{
+		// Check that user doesn't exist in DB
+		$userExist = User::where('username', '=', $username)->get();
+		
+		if(!empty($userExist[0]))
+		{
+			// precondition failed, user exists
+			return 412;
+		}
+
+		// Create student instance
+		$user = new User();
+
+		// Fill student with given data
+		$user -> username = $username; 
+		$user -> first_name = $firstName;
+		$user -> last_name = $lastName;
+		$user -> career = $career;
+		$user -> room_number = $roomNumber;
+
+		// Get student role reference to assign to user
+		$role = Role::where('description', '=', 'student')->get();
+
+		// Attemp to save user into DB
+		$result = $user -> save();
+
+		// Associate role to user
+		$user->roles()->attach($role[0]);
+
+		// If attemp was success
+		if($result)
+		{
+			// send code 'new resource created'
+			return 201;
+		}
+
+		// there was a system error
+		return 500;
+	}
+
+	/**
+	 * Creates a new student
+	 * @param  [int] $id   Student's id
+	 * @param  [string] $username   Student username
+	 * @param  [string] $firstName  Student first name
+	 * @param  [string] $lastName   Student last name
+	 * @param  [string] $career     Student career
+	 * @param  [int] $roomNumber Student room number
+	 * @return [int]             A status code of the final state of the process
+	 */
+	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber)
+	{
+		// Check that user doesn't exist in DB
+		$user = User::find($id);
+
+		if(!empty($user[0]))
+		{
+			// resource not found
+			return 404;
+		}
+
+		// Fill student with given data
+		$user -> username = $username; 
+		$user -> first_name = $firstName;
+		$user -> last_name = $lastName;
+		$user -> career = $career;
+		$user -> room_number = $roomNumber;
+
+		// Attemp to save user into DB
+		$result = $user -> save();
+
+		// If attemp was success
+		if($result)
+		{
+			// send code success
+			return 200;
+		}
+
+		// there was a system error
+		return 500;
+	}
+
+	/**
+	 * Deletes user with the given id
+	 * @param  [int] $id the user id
+	 * @return [int]     A final status code of the deletion process
+	 */
+	public function deleteUser($id)
+	{
+		$user = User::find($id);
+
+		// check if user exists
+		if(empty($user))
+		{
+			// if not, return 404, resource not found
+			return 404;
+		}
+
+		// Attemp to delete
+		$result = $user -> delete();
+
+		// Return success code if deletion was succesfull
+		if($result)
+		{
+			return 204;
+		}
+
+		// Something went wrong
 		return 500;
 	}
 }

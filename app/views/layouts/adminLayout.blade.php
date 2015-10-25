@@ -88,13 +88,13 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
-                                <a href="#">Students</a>
+                                <a href="../../students">Students</a>
                             </li>
                             <li>
-                                <a href="#">Resident Assistants</a>
+                                <a href="../../assistants">Resident Assistants</a>
                             </li>
                             <li>
-                                <a href="#">Parents</a>
+                                <a href="../../parents">Parents</a>
                             </li>
                         </ul>
                     </li>

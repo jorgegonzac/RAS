@@ -46,3 +46,24 @@ Route::get('mySonTickets', ['before' => 'auth', 'uses' => 'ParentsController@sho
 Route::get('mySonDReports', ['before' => 'auth', 'uses' => 'ParentsController@showDReports']);
 
 Route::get('myInfo', ['before' => 'auth', 'uses' => 'ParentsController@showMyInfo']);
+
+
+/*
+Route::get('students', ['before' => 'auth', 'uses' => 'AdminsController@showStudents']);
+
+Route::get('students/create', ['before' => 'auth', 'uses' => 'AdminsController@createStudent']);
+
+Route::post('students/create', ['before' => 'auth', 'uses' => 'AdminsController@storeStudent']);
+
+Route::get('students/{id}/edit', ['before' => 'auth', 'uses' => 'AdminsController@editStudent']);
+
+Route::post('students/update', ['before' => 'auth', 'as' => 'studentUpdate', 'uses' => 'AdminsController@updateStudent']);
+
+Route::delete('students/{id}', ['before' => 'auth', 'uses' => 'AdminsController@deleteStudent']);
+*/
+Route::resource('students','StudentsController');
+
+
+Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParents']);
+
+Route::get('assistants', ['before' => 'auth', 'uses' => 'AdminsController@showAssistants']);

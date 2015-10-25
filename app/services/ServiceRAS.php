@@ -869,10 +869,11 @@ class ServiceRAS implements ServiceRASInterface
 		// Check that user exist in DB
 		$user = User::where('username', '=', $username)->get();
 		
+		// user does not exist in DB
 		if(empty($user[0]))
 		{
-			// precondition failed, user must be registered in the system
-			return 412;
+			// resource not found
+			return 404;
 		}
 	
 		// Get student role reference to detach to user
@@ -880,6 +881,16 @@ class ServiceRAS implements ServiceRASInterface
 
 		// Get resident assistant role reference to assign to user
 		$role = Role::where('description', '=', 'resident assistant')->get();
+
+		// get user roles
+		$userRoles = $user[0]->roles()->get();
+
+		// check that user is not already an assistant
+		if($userRoles[0]->id == $role[0]->id)
+		{
+			// return conflict
+			return 409;
+		}
 
 		try
 		{

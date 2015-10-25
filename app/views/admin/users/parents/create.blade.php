@@ -82,10 +82,10 @@
 
           <ol class="breadcrumb">
             <li>
-              <i class="fa fa-dashboard"></i>  <a href="../parents">Parents</a>
+              <i class="fa fa-users"></i>  <a href="../parents">Parents</a>
             </li>
             <li class="active">
-              <i class="fa fa-file"></i> Create Parent
+              <i class="fa fa-file"></i> Create parent
             </li>
           </ol>
 

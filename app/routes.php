@@ -54,20 +54,5 @@ Route::resource('students','StudentsController');
 Route::resource('assistants','AssistantsController');
 
 Route::resource('parents','ParentsController');
-/*
-Route::get('students', ['before' => 'auth', 'uses' => 'AdminsController@showStudents']);
-
-Route::get('students/create', ['before' => 'auth', 'uses' => 'AdminsController@createStudent']);
-
-Route::post('students/create', ['before' => 'auth', 'uses' => 'AdminsController@storeStudent']);
-
-Route::get('students/{id}/edit', ['before' => 'auth', 'uses' => 'AdminsController@editStudent']);
-
-Route::post('students/update', ['before' => 'auth', 'as' => 'studentUpdate', 'uses' => 'AdminsController@updateStudent']);
-
-Route::delete('students/{id}', ['before' => 'auth', 'uses' => 'AdminsController@deleteStudent']);
-
-Route::get('assistants', ['before' => 'auth', 'uses' => 'AdminsController@showAssistants']);
-*/
 
 

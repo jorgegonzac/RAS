@@ -96,10 +96,24 @@ class StudentsController extends \BaseController
 			        ->withInput(Input::all()); // send back the input so that we can repopulate the form
 			}
 
-			// Save file into system
+			// Get file and file information from input
 			$file = Input::file('file');
 			$name = Input::file('file')->getClientOriginalName();
+			$extension = Input::file('file')->getClientOriginalExtension();
+
+			// if extension is not excel send error
+			if($extension != 'xlsx')
+			{	
+				$errors = 'The file is invalid. Only excel files are valid';
+				Session::flash('errors', $errors);
+
+			    return Redirect::to('importStudents');
+			}
+
+			// set destination path
 			$destionationPath = public_path() . '/files/';
+
+			// attemp to save file into destination path
 			$success = $file->move($destionationPath, $name);
 
 			// The file was stored

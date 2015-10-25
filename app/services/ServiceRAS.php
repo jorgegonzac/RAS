@@ -829,7 +829,7 @@ class ServiceRAS implements ServiceRASInterface
 		    $students = $reader->get()->toArray();
 
 		    foreach ($students as $student) 
-		    {
+		    {			    
 		    	// get data from student row
 		    	$username = $student['username'];
 		    	$firstName = $student['first_name'];

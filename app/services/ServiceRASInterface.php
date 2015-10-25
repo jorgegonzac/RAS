@@ -23,6 +23,7 @@ interface ServiceRASInterface
 	public function updateDReport($id, $username, $description, $date);
 	public function deleteDReport($id);
 	public function createParent($username, $schoolID, $firstName, $lastName, $email, $password);
+	public function updateParent($id, $username, $schoolID, $firstName, $lastName, $email);
 	public function createStudent($username, $firstName, $lastName, $career, $roomNumber);
 	public function createAssistant($username);	
 	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);

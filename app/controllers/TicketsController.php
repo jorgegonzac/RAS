@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class TicketsController extends \BaseController 
 {
+	// service instance
 	public $serviceRAS;
 
 	/**
@@ -96,23 +97,32 @@ class TicketsController extends \BaseController
 			// Call the service to create ticket
 			$response = $this->serviceRAS->studentCreatesTicket($username, $place, $phone, $type, null);		
 
+			// storing was succesfull
 			if($response == 200)
 			{
+				// redirect to previous route with success msg
 				$success = 'The ticket was updated';
+
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);	
 			}
 			elseif($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The ticket was created';
+
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);				
-			}elseif($response == 202)
+			}
+			elseif($response == 202)
 			{
+				// redirect to previous route with error msg
 				$success = 'The ticket was created but as -out of time- ';
+
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => 4, 'success' => $success]);				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
+
 			return Redirect::to('student')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());					
@@ -166,8 +176,10 @@ class TicketsController extends \BaseController
 			// Call the service to create ticket
 			$response = $this->serviceRAS->adminCreatesTicket($username, $place, $phone, $type, $checkIn, $checkOut);	
 
+			// storing was successfull
 			if($response == 201)
 			{
+				// redirect to previous route with success msg
 				$success = 'The ticket was created';
 				Session::flash('success', $success);
 
@@ -175,6 +187,7 @@ class TicketsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The username does not exist in the database.';
 
 				return Redirect::to('tickets/create')
@@ -182,7 +195,7 @@ class TicketsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error. Try again.';
 
 			return Redirect::to('tickets/create')
@@ -196,24 +209,11 @@ class TicketsController extends \BaseController
 		}
 	}
 
-
-	/**
-	 * Display the specified Absence ticket.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
 	/**
 	 * Show the form for editing the specified Absence ticket.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  int  $id tickets id
+ 	 * @return view 
 	 */
 	public function edit($id)
 	{
@@ -237,7 +237,7 @@ class TicketsController extends \BaseController
 	 * Update the specified Absence ticket in storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return view
 	 */
 	public function update($id)
 	{
@@ -276,8 +276,10 @@ class TicketsController extends \BaseController
 			// Call the service to create ticket
 			$response = $this->serviceRAS->adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut);	
 
+			// storing wass succesfull
 			if($response == 200)
 			{
+				// redirect to previous route with success msg
 				$success = 'The ticket was updated';
 				Session::flash('success', $success);
 
@@ -285,6 +287,7 @@ class TicketsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The username does not exist in the database.';
 
 			    return Redirect::to('tickets/' . $id . '/edit')
@@ -292,7 +295,7 @@ class TicketsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error. Try again.';
 
 			    return Redirect::to('tickets/' . $id . '/edit')
@@ -306,12 +309,11 @@ class TicketsController extends \BaseController
 		}
 	}
 
-
 	/**
 	 * Remove the specified Absence ticket from storage.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  int  $id ticket id
+	 * @return view
 	 */
 	public function destroy($id)
 	{
@@ -321,18 +323,21 @@ class TicketsController extends \BaseController
 			// Call service and get response code
 			$response = $this->serviceRAS->deleteTicket($id);
 
-			// Save msg in session according to response code;
+			// deletion was successfull
 			if($response == 204)
 			{
+				// save success msg
 				$success = 'The ticket was deleted';
 				Session::flash('success', $success);
 			}
 			elseif($response == 404)
 			{
+				// save error msg
 				$errors = 'The ticket does not exist';
 				Session::flash('errors', $errors);
 			}
 			else{
+				// save error msg
 				$errors = 'There was an error while deleting, try again';
 				Session::flash('errors', $errors);
 			}
@@ -456,6 +461,7 @@ class TicketsController extends \BaseController
 				}
 			}
 
+			// redirect to previous route with data
 			return Redirect::route('takeAttendance')->with(['created' => $created, 'closed' => $closed, 'problems' => $problems, 'msg' => $msg]);
 		}
 		else

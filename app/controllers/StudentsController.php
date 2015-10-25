@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class StudentsController extends \BaseController 
 {
+	// Service instance
 	public $serviceRAS;
 
 	/**
@@ -28,19 +29,22 @@ class StudentsController extends \BaseController
 			$username = Auth::user()->username;
 			$openTicket = $this->serviceRAS->getOpenTicket($username);
 
+			// set ticket data to empty
 			$place = "";
 			$phone = "";
 			$type = "";
 			$success = "";
 
+			// check if open ticket exists
 			if(!is_null($openTicket))
 			{
-				// Update variables
+				// Update ticket data
 				$place = $openTicket[0]->place;
 				$phone = $openTicket[0]->phone;
 				$type = $openTicket[0]->type;
 			}
 
+			// return view with ticket data
 			return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);
 		}
 		else
@@ -104,6 +108,7 @@ class StudentsController extends \BaseController
 			// if extension is not excel send error
 			if($extension != 'xlsx')
 			{	
+				// redirect to previous route with error msg
 				$errors = 'The file is invalid. Only excel files are valid';
 				Session::flash('errors', $errors);
 
@@ -122,9 +127,10 @@ class StudentsController extends \BaseController
 				// call service to import list
 				$response = $this->serviceRAS->importStudents($destionationPath . $name);
 
-				// If the import was success, return to view with success msg
+				// the import was success
 				if($response == 200)
 				{
+					// redirect to previous route with success msg
 					$success = 'The students were added';
 
 					Session::flash('success', $success);
@@ -132,7 +138,7 @@ class StudentsController extends \BaseController
 				}		
 			}
 
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 
 			return Redirect::to('importStudents')
@@ -226,9 +232,10 @@ class StudentsController extends \BaseController
 			// Call the service to create student
 			$response = $this->serviceRAS->createStudent($username, $firstName, $lastName, $career, $roomNumber);		
 
-			// Return a view with the message
+			// storing was successfull
 			if($response == 201)
 			{
+				// redirect to previous route with sucess msg
 				$success = 'The student was created';
 				Session::flash('success', $success);
 
@@ -236,6 +243,7 @@ class StudentsController extends \BaseController
 			}
 			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student was already registered';
 
 				return Redirect::to('students/create')
@@ -259,7 +267,7 @@ class StudentsController extends \BaseController
 
 	/**
 	 * Show the form for editing students
-	 * @return [type] [description]
+	 * @return [view] 
 	 */
 	public function edit($id)
 	{
@@ -280,7 +288,7 @@ class StudentsController extends \BaseController
 
 	/**
 	 * store the updated student
-	 * @return [type] [description]
+	 * @return [view] 
 	 */
 	public function update($id)
 	{
@@ -317,9 +325,10 @@ class StudentsController extends \BaseController
 			// Call the service to create student
 			$response = $this->serviceRAS->updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);		
 
-			// Return a view with the message
+			// updating was successfull
 			if($response == 200)
 			{
+				// redirect to previous route with success msg
 				$success = 'The student was updated';
 				Session::flash('success', $success);
 
@@ -327,6 +336,7 @@ class StudentsController extends \BaseController
 			}
 			elseif($response == 404)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student does not exist';
 
 			    return Redirect::to('students/' . $id .'/edit')
@@ -334,7 +344,7 @@ class StudentsController extends \BaseController
 			        ->withInput(Input::all());				
 			}	
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
 
 		    return Redirect::to('students/' . $id .'/update')
@@ -360,30 +370,37 @@ class StudentsController extends \BaseController
 			// Call the service to delete user
 			$response = $this->serviceRAS->deleteUser($id);
 
-			// Return a view with the message
+			// deletion was sucessfull
 			if($response == 204)
 			{
+				// redirect to previous route with successfull msg
 				$success = 'The student was deleted';
 				Session::flash('success', $success);
 
 				return Redirect::action('StudentsController@index');	
-			}elseif($response == 404)
+			}
+			elseif($response == 404)
 			{
+				// redirect to previous route with error msg
 				$errors = 'The student does not exist';
 				
 				return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				
-			}elseif($response == 412)
+			}
+			elseif($response == 412)
 			{
+				// redirect to previous route with error msg
 				$errors = 'Student cannot be deleted. First delete his parent';
+
 				return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				
 			}		
 		
-			// The system had an error
+			// redirect to previous route with error msg
 			$errors = 'There was an error';
+
 			return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());			
@@ -394,5 +411,4 @@ class StudentsController extends \BaseController
 			return Redirect::to('login');
 		}	
 	}
-
 }

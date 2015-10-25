@@ -3,6 +3,7 @@ use services\ServiceRASInterface;
 
 class SessionsController extends \BaseController 
 {
+	// Service instance
 	public $serviceRAS;
 
 	/**
@@ -21,13 +22,12 @@ class SessionsController extends \BaseController
 	 */
 	public function create()
 	{
-		//
 		return View::make('login');
 	}
 
 	/**
 	 * Authenticate user credentials
-	 * @return [Response]
+	 * @return view
 	 */
 	public function authenticate()
 	{
@@ -84,7 +84,7 @@ class SessionsController extends \BaseController
 					return Redirect::to('admin');
 									
 				default:
-					// If none, then redirect to login
+					// If none of above, then redirect to login
 					$errors['system'] = "Hubo un error en el sistema. Intente de nuevo";
 					return Redirect::to('login')
 			        ->withErrors($errors);
@@ -93,21 +93,10 @@ class SessionsController extends \BaseController
 	}
 
 	/**
-	 * Store a newly created session in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-
-	/**
 	 * Remove the specified session from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return view
 	 */
 	public function destroy()
 	{

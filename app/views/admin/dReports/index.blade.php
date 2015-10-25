@@ -9,13 +9,11 @@
 
 	<!-- Show errors or success of deleting -->
 	<div class="panel-body">
-        @if(Session::get('errors'))
+        @if($errors = Session::get('errors'))
           	<div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h5>There were some errors:</h5>
-            @foreach($errors->all('<li>:message</li>') as $message)
-              {{$message}}
-            @endforeach
+              {{$errors}}
           </div>
         @elseif($success = Session::get('success'))        	
 	        <div class="alert alert-success alert-dismissable">

@@ -60,10 +60,12 @@ Route::get('students/{id}/edit', ['before' => 'auth', 'uses' => 'AdminsControlle
 Route::post('students/update', ['before' => 'auth', 'as' => 'studentUpdate', 'uses' => 'AdminsController@updateStudent']);
 
 Route::delete('students/{id}', ['before' => 'auth', 'uses' => 'AdminsController@deleteStudent']);
+
+Route::get('assistants', ['before' => 'auth', 'uses' => 'AdminsController@showAssistants']);
 */
 Route::resource('students','StudentsController');
 
+Route::resource('assistants','AssistantsController');
 
 Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParents']);
 
-Route::get('assistants', ['before' => 'auth', 'uses' => 'AdminsController@showAssistants']);

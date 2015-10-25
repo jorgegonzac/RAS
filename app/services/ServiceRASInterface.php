@@ -24,6 +24,8 @@ interface ServiceRASInterface
 	public function deleteDReport($id);
 	public function createParent($username, $schoolID, $firstName, $lastName, $email, $password);
 	public function createStudent($username, $firstName, $lastName, $career, $roomNumber);
+	public function createAssistant($username);	
 	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);
-	public function deleteUser($id);
+	public function deleteUser($id);	
+	public function deleteAssistant($id);	
 }

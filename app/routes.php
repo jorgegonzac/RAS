@@ -47,7 +47,13 @@ Route::get('mySonDReports', ['before' => 'auth', 'uses' => 'ParentsController@sh
 
 Route::get('myInfo', ['before' => 'auth', 'uses' => 'ParentsController@showMyInfo']);
 
+Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParents']);
 
+Route::resource('students','StudentsController');
+
+Route::resource('assistants','AssistantsController');
+
+Route::resource('parents','ParentsController');
 /*
 Route::get('students', ['before' => 'auth', 'uses' => 'AdminsController@showStudents']);
 
@@ -63,9 +69,5 @@ Route::delete('students/{id}', ['before' => 'auth', 'uses' => 'AdminsController@
 
 Route::get('assistants', ['before' => 'auth', 'uses' => 'AdminsController@showAssistants']);
 */
-Route::resource('students','StudentsController');
 
-Route::resource('assistants','AssistantsController');
-
-Route::get('parents', ['before' => 'auth', 'uses' => 'AdminsController@showParents']);
 

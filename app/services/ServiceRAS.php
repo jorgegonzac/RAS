@@ -668,12 +668,19 @@ class ServiceRAS implements ServiceRASInterface
 		$parent -> first_name = $firstName;
 		$parent -> last_name = $lastName;
 		$parent -> email = $email;
+		$parent -> user_id = $son[0]->id;
 
 		// Encrypt password with hash
 		$parent -> password = Hash::make($password);
 
 		// Attemp to save parent into DB
 		$result = $parent -> save();
+
+		// Get parent role reference to assign to user
+		$role = Role::where('description', '=', 'parent')->get();
+
+		// Associate role to user
+		$parent->roles()->attach($role[0]);
 
 		// If attemp was success
 		if($result)
@@ -693,6 +700,59 @@ class ServiceRAS implements ServiceRASInterface
 
 		// there was a system error
 		return 500;
+	}
+
+	/**
+	 * update a parent account with the given data
+	 * @param  [int] $id  Parent's id
+	 * @param  [string] $username  Parent username
+	 * @param  [string] $schoolID  Son's school id
+	 * @param  [string] $firstName First name
+	 * @param  [string] $lastName  Last name
+	 * @param  [string] $email     Parent's Email
+	 * @return [int]            Final status code of the process
+	 */
+	public function updateParent($id, $username, $schoolID, $firstName, $lastName, $email)
+	{
+		// check if schoolID exists
+		$son = User::where('username', '=', $schoolID)->get();
+
+		// If schooID doesn't exist, return error 'precondition failed' (son's id need to be registered)
+		if(empty($son[0]))
+		{
+			return 412;
+		}		
+
+		// Creat parent instance
+		$parent = User::find($id);
+
+		// check if parent exists
+		if(empty($parent))
+		{
+			// resource not found
+			return 404;
+		}
+
+		// Fill parent with given data
+		$parent -> username = $username; 
+		$parent -> first_name = $firstName;
+		$parent -> last_name = $lastName;
+		$parent -> email = $email;
+		$parent -> user_id = $son[0]->id;
+
+		try
+		{
+			// Attemp to save parent into DB
+			$result = $parent -> save();
+
+			// success
+			return 201;
+		}
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}	
 	}
 
 	/**

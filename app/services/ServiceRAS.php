@@ -580,17 +580,19 @@ class ServiceRAS implements ServiceRASInterface
 		// Get user id and save it on ticket
 		$report -> user_id = $user[0]->id;
 
-		// save ticket in DB
-		$response = $report -> save();
-
-		if($response)
+		try
 		{
+			// save DReport in DB
+			$response = $report -> save();
+			
 			// DReport was succesfully updated
 			return 200;
 		}
-
-		// System had an error while processing
-		return 500;
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}		
 	}	
 
 	/**
@@ -604,24 +606,25 @@ class ServiceRAS implements ServiceRASInterface
 		$DReport = Report::find($id);
 
 		// Check that DReport exist
-		if(empty($DReport[0]))
+		if(empty($DReport))
 		{
 			// return Resource not found
 			return 404;
 		}
 
-		// Attemp to delete the DReport
-		$result = $DReport -> delete();
-
-		// If attemp was success
-		if($result)
+		try
 		{
+			// Attemp to delete the DReport
+			$result = $DReport -> delete();
+			
 			// Server successfully processed the request, but is not returning any content
 			return 204;
 		}
-
-		// there was a system error
-		return 500;
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}		
 	}	
 
 	/**
@@ -725,23 +728,58 @@ class ServiceRAS implements ServiceRASInterface
 		// Get student role reference to assign to user
 		$role = Role::where('description', '=', 'student')->get();
 
-		// Attemp to save user into DB
-		$result = $user -> save();
-
-		// Associate role to user
-		$user->roles()->attach($role[0]);
-
-		// If attemp was success
-		if($result)
+		try
 		{
-			// send code 'new resource created'
+			// Attemp to save user into DB
+			$result = $user -> save();
+
+			// Associate role to user
+			$user->roles()->attach($role[0]);
+			
+			// success
 			return 201;
 		}
-
-		// there was a system error
-		return 500;
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}		
 	}
 
+	/**
+	 * Creat a resident assistat using the given username
+	 * @param  [string] $username The username of the student (who will upgrade his role)
+	 * @return [int]           An status code
+	 */
+	public function createAssistant($username)
+	{
+		// Check that user exist in DB
+		$user = User::where('username', '=', $username)->get();
+		
+		if(empty($user[0]))
+		{
+			// precondition failed, user must be registered in the system
+			return 412;
+		}
+
+		// Get resident assistant role reference to assign to user
+		$role = Role::where('description', '=', 'resident assistant')->get();
+
+		try
+		{
+			// Associate role to user
+			$user[0]->roles()->attach($role[0]);
+			
+			// succesfull
+			return 201;
+		}
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}	
+	}
+	
 	/**
 	 * Creates a new student
 	 * @param  [int] $id   Student's id
@@ -770,18 +808,19 @@ class ServiceRAS implements ServiceRASInterface
 		$user -> career = $career;
 		$user -> room_number = $roomNumber;
 
-		// Attemp to save user into DB
-		$result = $user -> save();
-
-		// If attemp was success
-		if($result)
+		try
 		{
+			// Attemp to save user into DB
+			$result = $user -> save();
+	
 			// send code success
 			return 200;
 		}
-
-		// there was a system error
-		return 500;
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}	
 	}
 
 	/**
@@ -800,17 +839,53 @@ class ServiceRAS implements ServiceRASInterface
 			return 404;
 		}
 
-		// Attemp to delete
-		$result = $user -> delete();
-
-		// Return success code if deletion was succesfull
-		if($result)
+		try
 		{
+			// Attemp to delete
+			$result = $user -> delete();
+	
+			// Return success code if deletion was succesfull
 			return 204;
 		}
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}	
+	}
 
-		// Something went wrong
-		return 500;
+	/**
+	 * Deletes resident assistant with the given id
+	 * @param  [int] $id the user id
+	 * @return [int]     A final status code of the deletion process
+	 */
+	public function deleteAssistant($id)
+	{
+		$user = User::find($id);
+
+		// check if user exists
+		if(empty($user))
+		{
+			// if not, return 404, resource not found
+			return 404;
+		}
+
+		// Get resident assistant role reference 
+		$role = Role::where('description', '=', 'resident assistant')->get();
+
+		try
+		{
+			// Attemp to delete RA role
+			$user->roles()->detach($role[0]->id);
+	
+			// Return success code if deletion was succesfull
+			return 204;
+		}
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}		
 	}
 }
 		

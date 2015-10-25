@@ -107,7 +107,7 @@ class AssistantsController extends \BaseController
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());				
 			}	
-			elseif($response == 412)
+			elseif($response == 409)
 			{
 				$errors = 'The student is already a Resident Assistant';
 

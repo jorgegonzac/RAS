@@ -18,7 +18,9 @@
                   <div class="alert alert-danger alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h5>There were some errors:</h5>
-                  {{$errors}}
+                  @foreach($errors->all('<li>:message</li>') as $message)
+                    {{$message}}
+                  @endforeach
                 </div>
               @elseif($success = Session::get('success'))         
                 <div class="alert alert-success alert-dismissable">
@@ -43,19 +45,19 @@
             <br>
               {{ Form::submit('Upload', array('class'=>'btn btn-info btn-block')) }}
           {{ Form::close() }}
-
-          <ol class="breadcrumb">
-            <li>
-              <i class="fa fa-users"></i>  <a href="../students">Students</a>
-            </li>
-            <li class="active">
-              <i class="fa fa-file"></i> Import students
-            </li>
-          </ol>
+          <br>
 
         </div>
       </div>
     </div>
   </div>
+  <ol class="breadcrumb">
+    <li>
+      <i class="fa fa-users"></i>  <a href="../students">Students</a>
+    </li>
+    <li class="active">
+      <i class="fa fa-file"></i> Import students
+    </li>
+  </ol>
 </div>
 @stop

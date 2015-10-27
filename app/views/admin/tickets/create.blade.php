@@ -55,11 +55,11 @@
 	        	<div class="row">
 	        		<div class="col-sm-6 form-group">
 						<label for="check-in"> <h5>Check-in</h5></label>
-				     	<input name="check-in" id="check-in" class="check-in form-control input-sm required"> </input>
+		            	{{ Form::text('check-in', '', array('class'=>'check-in form-control input-sm', 'id' =>'check-in', 'required' => 'required')) }}
 		          	</div>
 	        		<div class="col-sm-6 form-group">
 						<label for="check-out"> <h5>Check-out</h5></label>
-				     	<input name="check-out" id="check-out" class="check-out form-control input-sm" > </input>
+		            	{{ Form::text('check-out', '', array('class'=>'check-out form-control input-sm', 'id' =>'check-out', 'required' => 'required')) }}
 		          	</div>
 	        	</div>
 	     	  	

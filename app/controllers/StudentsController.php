@@ -135,6 +135,15 @@ class StudentsController extends \BaseController
 
 					Session::flash('success', $success);
 					return Redirect::action('StudentsController@importStudents');						
+				}
+				elseif($response == 400)
+				{
+					// redirect to previous route with error msg
+					$errors = 'The file does not have the proper format';
+
+					return Redirect::to('importStudents')
+					        ->withErrors($errors) // send back all errors to the  form
+					        ->withInput(Input::all());										
 				}		
 			}
 
@@ -163,9 +172,15 @@ class StudentsController extends \BaseController
 		if(Session::get('role') == 4)
 		{
 			// Call service and get users by role = student
-			$users = $this->serviceRAS->getUsersByRole('student');
+			$students = $this->serviceRAS->getUsersByRole('student');
 
-			// return view with the tickets
+			// Get resident assistant since they are also students
+			$assistants = $this->serviceRAS->getUsersByRole('resident assistant');
+
+			// Merge both collections into a final one
+			$users = $students->merge($assistants);
+
+			// return view with the users
 			return View::make('admin.users.students.index')->with(['users' => $users]);						
 		}
 		else

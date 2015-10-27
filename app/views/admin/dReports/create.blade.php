@@ -34,7 +34,7 @@
 
 	        		<div class="col-sm-6 form-group">
 						<label for="date"> <h5>Date</h5></label>
-				     	<input name="date" id="date" class="date form-control input-sm"> </input>
+		            	{{ Form::text('date', '', array('class'=>'date form-control input-sm', 'id' =>'date', 'required' => 'required')) }}
 	        		</div>
 	        	</div>
 

@@ -10,7 +10,7 @@
 	<br>
 	Your account has been created with the username <b> {{$username}} </b> and it's associated with the student <b>{{$school_id}}</b>
 	<br>
-	You can now login at http://localhost:8000/login
+	You can now login at http://resisqueretaro.xyz/
 </div>
 </body>
 </html>

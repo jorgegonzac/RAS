@@ -106,18 +106,17 @@
 				</div>
 			</div>
 			<!-- end show student list -->
-
-	        <ol class="breadcrumb">
-		        <li>
-		            <i class="fa fa-dashboard"></i>  <a href="admin">Dashboard</a>
-		        </li>
-		        <li class="active">
-		            <i class="fa fa-file"></i> Blank Page
-		        </li>
-	        </ol>
         </div>
     </div>
     <!-- /.row -->
+    <ol class="breadcrumb">
+        <li>
+            <i class="fa fa-dashboard"></i>  <a href="admin">Dashboard</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-file"></i> Blank Page
+        </li>
+    </ol>
 
 </div>
             <!-- /.container-fluid -->

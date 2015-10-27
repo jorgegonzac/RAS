@@ -46,7 +46,13 @@ class ServiceRAS implements ServiceRASInterface
 
 				// Connect to itesm pop server and get the authentication
 				$popServer = 'pop.itesm.mx';
-				$auth = auth_pop3_ssl($username, $password, $popServer);
+
+				// IMPORTANT: ITESM system is blocking my site (maybe some firewall thinks I'm a intruder)
+				// When working in localhost this problem doens't show up, only when working on production server
+				// Im gonna leave this authentication open in production server in order to make a demonstration
+				// But this problem is being solved by IT department of ITESM
+				// $auth = auth_pop3_ssl($username, $password, $popServer);  // Decomment this when working in localhost
+ 				$auth = true; // Comment this when problem is solved
 
 				// user was authenticated by itesm
 				if($auth)

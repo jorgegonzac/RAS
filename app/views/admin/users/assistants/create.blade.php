@@ -56,18 +56,17 @@
 	        <div class="form-group col-sm-4"></div>
 	        </div>
 
-          <ol class="breadcrumb">
-            <li>
-              <i class="fa fa-users"></i>  <a href="../assistants">Resident Assistants</a>
-            </li>
-            <li class="active">
-              <i class="fa fa-file"></i> Create resident assistant
-            </li>
-          </ol>
-
         </div>
       </div>
     </div>
   </div>
+  <ol class="breadcrumb">
+    <li>
+      <i class="fa fa-users"></i>  <a href="../assistants">Resident Assistants</a>
+    </li>
+    <li class="active">
+      <i class="fa fa-file"></i> Create resident assistant
+    </li>
+  </ol>
 </div>
 @stop

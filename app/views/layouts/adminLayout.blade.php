@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.ico">
 
     <title>RAS - Admin portal</title>
 
@@ -59,9 +60,6 @@
                                 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="../../logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>

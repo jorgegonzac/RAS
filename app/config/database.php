@@ -51,7 +51,18 @@ return array(
 			'database' => __DIR__.'/../database/production.sqlite',
 			'prefix'   => '',
 		),
-
+/* Production */
+		'mysql' => array(
+			'driver'    => 'mysql',
+			'host'      => 'mysql.hostinger.mx',
+			'database'  => 'u635963854_ras',
+			'username'  => 'u635963854_ras',
+			'password'  => '',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),
+/* Local 
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
@@ -62,7 +73,7 @@ return array(
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 		),
-
+*/
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',

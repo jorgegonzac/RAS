@@ -874,6 +874,13 @@ class ServiceRAS implements ServiceRASInterface
 		    	$career = $student['career'];
 		    	$roomNumber = $student['room_number'];
 
+		    	// check that data is not empty
+		    	if(empty($username) || empty($firstName) || empty($lastName) || empty($career) || empty($roomNumber))
+		    	{
+		    		// if any attribute is empty move to the next iteration
+		    		continue;
+		    	}
+
 		    	// check if user is already registered		    	
 				$user = User::where('username', '=', $username)->get();
 				

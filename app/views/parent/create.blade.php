@@ -20,8 +20,9 @@
 	    @elseif($success = Session::get('success'))
 			<div class="alert alert-success alert-dismissable">
 			   	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		        <h5>Success:</h5>
+		        <h5>Congratulations!:</h5>
 		        {{$success}}
+            <h5>You can go now to <a href="login"><h3>login</h3></a></h5>
 	    	</div>
         @endif
 

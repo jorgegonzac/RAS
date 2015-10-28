@@ -46,7 +46,13 @@ class ServiceRAS implements ServiceRASInterface
 
 				// Connect to itesm pop server and get the authentication
 				$popServer = 'pop.itesm.mx';
-				$auth = auth_pop3_ssl($username, $password, $popServer);
+
+				// IMPORTANT: ITESM system is blocking my site (maybe some firewall thinks I'm a intruder)
+				// When working in localhost this problem doens't show up, only when working on production server
+				// Im gonna leave this authentication open in production server in order to make a demonstration
+				// But this problem is being solved by IT department of ITESM
+				// $auth = auth_pop3_ssl($username, $password, $popServer);  // Decomment this when working in localhost
+ 				$auth = true; // Comment this when problem is solved
 
 				// user was authenticated by itesm
 				if($auth)
@@ -699,7 +705,7 @@ class ServiceRAS implements ServiceRASInterface
 		$parent -> user_id = $son[0]->id;
 
 		// Encrypt password with hash
-		$parent -> password = Hash::make($password);
+		$parent -> password = $password;
 
 		// Attemp to save parent into DB
 		$result = $parent -> save();
@@ -841,10 +847,23 @@ class ServiceRAS implements ServiceRASInterface
 	 */
 	public function importStudents($path)
 	{
-		Excel::load($path, function($reader) 
+		$finalStatus = 200;
+
+		Excel::load($path, function($reader) use(&$finalStatus)
 		{
 		  	// Getting all results
-		    $students = $reader->get()->toArray();
+		    $students = $reader->all()->toArray();
+
+			// check if headers are correct
+			$firstrow = $students[0];
+
+			// check if attributes are set
+	        if (!isset($firstrow['username']) || !isset($firstrow['first_name']) || !isset($firstrow['last_name']) || !isset($firstrow['career'])  || !isset($firstrow['room_number'])) 
+	        {
+	        	// return bad request, columns header are incorrect
+	        	$finalStatus = 400;
+	        	return;
+	        }
 
 		    foreach ($students as $student) 
 		    {			    
@@ -854,6 +873,13 @@ class ServiceRAS implements ServiceRASInterface
 		    	$lastName = $student['last_name'];
 		    	$career = $student['career'];
 		    	$roomNumber = $student['room_number'];
+
+		    	// check that data is not empty
+		    	if(empty($username) || empty($firstName) || empty($lastName) || empty($career) || empty($roomNumber))
+		    	{
+		    		// if any attribute is empty move to the next iteration
+		    		continue;
+		    	}
 
 		    	// check if user is already registered		    	
 				$user = User::where('username', '=', $username)->get();
@@ -867,14 +893,15 @@ class ServiceRAS implements ServiceRASInterface
 			    	// if there was an error system, return 500
 			    	if($response == 500)
 			    	{
-			    		return 500;
+			    		$finalStatus = 500;
+			    		return ;
 			    	}
 				}
 		    }
 		});
 
-	    // If reach this point, then everything was ok
-	    return 200;
+	    // Return final status code of the process
+	    return $finalStatus;
 	}
 
 	/**
@@ -1006,13 +1033,14 @@ class ServiceRAS implements ServiceRASInterface
 				// Delete all associated users_roles
 				DB::table('users_roles')->where('user_id', $parent[0]->id)->delete();
 
-				DB::table('users')->where('user_id', $id)->delete();			
+				// delete parent
+				$parent[0] -> delete(); 		
 			}
-
-			DB::commit();
 
 			// Attemp to delete
 			$user -> delete();
+
+			DB::commit();
 	
 			// Return success code if deletion was succesfull
 			return 204;

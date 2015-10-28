@@ -64,21 +64,19 @@
 
             </div>
           <br>
-              {{ Form::submit('Create', array('class'=>'btn btn-info btn-block')) }}
+              {{ Form::submit('Save', array('class'=>'btn btn-info btn-block')) }}
           {{ Form::close() }}
-
-          <ol class="breadcrumb">
-            <li>
-              <i class="fa fa-users"></i>  <a href="../../parents">Parents</a>
-            </li>
-            <li class="active">
-              <i class="fa fa-file"></i> Edit parent
-            </li>
-          </ol>
-
         </div>
       </div>
     </div>
   </div>
+  <ol class="breadcrumb">
+    <li>
+      <i class="fa fa-users"></i>  <a href="../../parents">Parents</a>
+    </li>
+    <li class="active">
+      <i class="fa fa-file"></i> Edit parent
+    </li>
+  </ol>
 </div>
 @stop

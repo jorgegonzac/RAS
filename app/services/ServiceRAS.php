@@ -209,8 +209,10 @@ class ServiceRAS implements ServiceRASInterface
 
 		if(!is_null($openTicket))
 		{
-			// If there is an open ticket return 412 (precondition failed)
-			return 412;
+			// If there is an open ticket, close it 
+			$code = $this->closeTicket($openTicket[0]->id);
+
+			return $code;
 		}
 
 		// Create a new ticket reference
@@ -360,6 +362,31 @@ class ServiceRAS implements ServiceRASInterface
 		if($response)
 		{
 			// Ticket was successfully updated
+			return 200;
+		}
+
+		// there was an error
+		return 500;
+	}
+
+	/**
+	 * Close ticket
+	 * @param  [int] $id Id from ticket
+	 * @return [int]    A final status code of the closing ticket
+	 */
+	public function closeTicket($id)
+	{
+		// New ticket reference
+		$ticket = Ticket::find($id);
+
+		// set check out hour
+		$ticket -> check_out = DB::raw('NOW()');
+
+		$response = $ticket -> save();
+
+		if($response)
+		{
+			// ticket was closed successfully
 			return 200;
 		}
 

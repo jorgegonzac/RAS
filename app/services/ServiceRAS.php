@@ -170,8 +170,10 @@ class ServiceRAS implements ServiceRASInterface
 		$actualTime = getdate();
 		$hours = $actualTime['hours'];
 
-		// Business Rule: Check if time is between 11pm and 6am
-		if($hours >= 23 || $hours <6)
+		$hours = 23;
+
+		// Business Rule: Check if time is between 11pm and 6am when creating ticket
+		if(($hours >= 23 || $hours <6)	&&	is_null($openTicket))
 		{
 			// Set type to 'Out of time'
 			$ticket -> type = 4;

@@ -17,6 +17,7 @@ interface ServiceRASInterface
 	public function getTicket($id);
 	public function getTicketsByUserID($userID);	
 	public function adminUpdatesTicket($id, $username, $place, $phone, $type, $checkIn, $checkOut);
+	public function closeTicket($id);
 
 	// User methods
 	public function getUser($id);

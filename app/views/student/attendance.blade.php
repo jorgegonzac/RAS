@@ -20,7 +20,7 @@
 	        @if($closed = Session::get('closed'))
 	        	<div class="alert alert-warning alert-dismissable">
 		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		            <h5>Failed:</h5>
+		            <h5>Closed:</h5>
 		            <ol>
 		            @foreach($closed as $message)
 		              	<li>{{$message}}</li>

@@ -445,9 +445,9 @@ class TicketsController extends \BaseController
 						// Absence was created succesfully
 						$created[] = $username;
 					}
-					elseif($response == 412)
+					elseif($response == 200)
 					{
-						// There was an open ticket, close it ?					
+						// There was an open ticket, close it 				
 						$closed[] = $username;
 					}
 					else

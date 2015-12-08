@@ -358,8 +358,8 @@ class TicketsController extends \BaseController
 	 */
 	public function showAttendanceList()
 	{
-		// Check for user authorization (RA+Admin)
-		if(Session::get('role')==2 || Session::get('role')==4)
+		// Check for user authorization (RA+Admin+Office)
+		if(Session::get('role')==2 || Session::get('role')==4 || Session::get('role')==5)
 		{			
 			$finalList;
 
@@ -378,7 +378,7 @@ class TicketsController extends \BaseController
 				// Return admin attendance view
 				return View::make('admin.attendance.index', ['students' => $finalList]);				
 			}
-			else
+			elseif(Session::get('role')==2) // check if user is resident assistant
 			{
 				// Get user's room
 				$userRoom = Auth::user()->room_number;
@@ -401,6 +401,20 @@ class TicketsController extends \BaseController
 				// return RA view
 				return View::make('student.attendance', ['students' => $finalList]);
 			}
+			elseif(Session::get('role')==5) // check if user is office user
+			{
+				// Get the attendance list of each floor
+				$listFloor1 = $this->serviceRAS->getAttendanceList(100);	
+				$listFloor2 = $this->serviceRAS->getAttendanceList(200);	
+				$listFloor3 = $this->serviceRAS->getAttendanceList(300);	
+				$listFloor4 = $this->serviceRAS->getAttendanceList(400);	
+
+				// Merge all the lists into a final list
+				$finalList = array_merge($listFloor1, $listFloor2, $listFloor3, $listFloor4);
+
+				// Return admin attendance view
+				return View::make('office.attendance', ['students' => $finalList]);			
+			}
 		}
 		else
 		{
@@ -415,8 +429,8 @@ class TicketsController extends \BaseController
 	 */
 	public function saveAttendanceList()
 	{
-		// Check for user authorization (RA+Admin)
-		if(Session::get('role')==2 || Session::get('role')==4)
+		// Check for user authorization (RA+Admin+Office)
+		if(Session::get('role')==2 || Session::get('role')==4 || Session::get('role')==5)
 		{			
 			$students = Input::get('attendanceList');
 			

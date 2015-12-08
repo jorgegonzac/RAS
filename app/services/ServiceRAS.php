@@ -71,7 +71,8 @@ class ServiceRAS implements ServiceRASInterface
 				break;
 			case 3:
 			case 4:
-				// Parent - Admin
+			case 5:
+				// Parent - Admin - Office
 				// check credentials in DB
 				if(Auth::attempt(['username' => $username, 'password' => $password]))
 				{

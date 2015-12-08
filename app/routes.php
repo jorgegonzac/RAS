@@ -11,7 +11,7 @@
 |
 */
 
-/*Login routes: used to provide authentication and handle sessions*/
+/* Login routes: used to provide authentication and handle sessions*/
 
 Route::get('/', 'SessionsController@create');
 
@@ -69,3 +69,7 @@ Route::post('importStudents', ['before' => 'auth', 'uses' => 'StudentsController
 /* Resident Assistant routes */
 
 Route::resource('assistants','AssistantsController');
+
+/* Office routes */
+
+Route::get('office', ['before' => 'auth', 'uses' => 'TicketsController@showAttendanceList']);

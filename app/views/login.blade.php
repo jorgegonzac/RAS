@@ -7,7 +7,7 @@
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
        <!-- <h3 class="panel-title">Please sign in </h3> -->
-        <div><img src="../images/logoResis.png" class="image-circle"/></div>  
+        <div><img src="images/logoResis.png" class="image-circle"/></div>  
       </div>
       <div class="panel-body">
         @if(Session::get('errors'))

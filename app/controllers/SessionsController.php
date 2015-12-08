@@ -82,10 +82,6 @@ class SessionsController extends \BaseController
 				case 4:
 					// Admin 
 					return Redirect::to('admin');
-
-				case 5:
-					// Office
-					return Redirect::to('office');
 									
 				default:
 					// If none of above, then redirect to login

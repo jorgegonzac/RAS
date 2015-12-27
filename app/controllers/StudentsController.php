@@ -55,6 +55,102 @@ class StudentsController extends \BaseController
 	}
 
 	/**
+	 * Display account settings 
+	 * @return View
+	 */
+	public function showSettings()
+	{
+		// Check for user authorization
+		if(Session::get('role')==1 || Session::get('role')==2)
+		{
+			$user = Auth::user();
+
+			return View::make('student.settings', ['user' => $user]);
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}
+	}
+
+	/**
+	 * Store account settings 
+	 * @return View
+	 */
+	public function storeSettings()
+	{
+		// Check for user authorization
+		if(Session::get('role')==1 || Session::get('role')==2)
+		{
+			// validate the info, create rules for the inputs
+			$rules = array(
+			    'email' => 'required|email',
+			);
+
+			// run the validation rules on the inputs from the form
+			$validator = Validator::make(Input::all(), $rules);
+
+			// if the validator fails, redirect back to the form
+			if ($validator->fails()) 
+			{
+			    return Redirect::to('settings')
+			        ->withErrors($validator) // send back all errors to the  form
+			        ->withInput(Input::all()); // send back the input so that we can repopulate the form
+			}
+
+			// get data from Input
+			$id = Auth::user()->id;
+			$email = Input::get('email');
+			$password = Input::get('password');
+			$passwordConfirmation = Input::get('passwordConfirmation');
+
+			// call service to save settings
+			$response = $this->serviceRAS->saveStudentSettings($id, $email, $password, $passwordConfirmation);			
+			
+			// storing was successfull
+			if($response == 200)
+			{
+				// redirect to previous route with sucess msg
+				$success = 'The settings were stored';
+				Session::flash('success', $success);
+
+				return Redirect::action('StudentsController@showSettings');	
+			}
+			elseif($response == 404)
+			{
+				// redirect to previous route with error msg
+				$errors = 'The student does not exist';
+
+				return Redirect::to('settings')
+			        ->withErrors($errors) // send back all errors to the  form
+			        ->withInput(Input::all());				
+			}	
+			elseif($response == 400)
+			{
+				// redirect to previous route with error msg
+				$errors = 'The passwords need to match';
+
+				return Redirect::to('settings')
+			        ->withErrors($errors) // send back all errors to the  form
+			        ->withInput(Input::all());				
+			}	
+		
+			// The system had an error
+			$errors = 'There was an error';
+
+			return Redirect::to('settings')
+			        ->withErrors($errors) // send back all errors to the  form
+			        ->withInput(Input::all());	
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');
+		}
+	}
+
+	/**
 	 * Display import form
 	 *
 	 * @return view

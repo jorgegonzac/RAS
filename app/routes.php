@@ -21,6 +21,7 @@ Route::post('login', 'SessionsController@authenticate');
 
 Route::get('logout', 'SessionsController@destroy');
 
+Route::controller('password', 'RemindersController');
 
 /* Admin routes */
 

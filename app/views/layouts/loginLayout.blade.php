@@ -12,7 +12,7 @@
           rel="stylesheet">
     <style>
     body{
-      background: url("images/background/fabric_of_squares_gray.png");
+      background: url("../images/background/fabric_of_squares_gray.png");
     }
 
     .centered-form .panel{

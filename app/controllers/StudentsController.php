@@ -106,7 +106,7 @@ class StudentsController extends \BaseController
 			$passwordConfirmation = Input::get('passwordConfirmation');
 
 			// call service to save settings
-			$response = $this->serviceRAS->saveStudentSettings($id, $email, $password, $passwordConfirmation);			
+			$response = $this->serviceRAS->storeStudentSettings($id, $email, $password, $passwordConfirmation);			
 			
 			// storing was successfull
 			if($response == 200)

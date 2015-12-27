@@ -999,14 +999,14 @@ class ServiceRAS implements ServiceRASInterface
 	}
 
 	/**
-	 * Save student settings
-	 * @param  [type] $id              [description]
-	 * @param  [type] $email           [description]
-	 * @param  [type] $password        [description]
-	 * @param  [type] $passwordConfirm [description]
-	 * @return [type]                  [description]
+	 * Store student settings
+	 * @param  [int] $id              User's id
+	 * @param  [string] $email           An string with the email
+	 * @param  [string] $password        An string with the password
+	 * @param  [string] $passwordConfirm An string with the password confirmation
+	 * @return [int]                  Final status code of process
 	 */
-	public function saveStudentSettings($id, $email, $password, $passwordConfirm)
+	public function storeStudentSettings($id, $email, $password, $passwordConfirm)
 	{
 		$user = User::find($id);
 

@@ -556,6 +556,25 @@ class ServiceRAS implements ServiceRASInterface
 
 		if($response)
 		{
+			// send mail to parent
+			$data = ['user' => $user[0], 'report' => $report];
+			
+			// find parent
+			$parent = User::where('user_id', '=', $user[0]->id)->get();
+
+			if(!empty($parent[0]))
+			{
+				$email = $parent[0]->email;
+
+				// Server successfully created the parent
+				Mail::send('emails.disciplinaryReport', $data, function($message) use ($email)
+				{		
+				    $message->from('residenciasqro@gmail.com', 'RAS');
+
+				    $message->to($email)->subject('System notification');
+				});				
+			}
+
 			// DReport was succesfully created
 			return 201;
 		}
@@ -718,6 +737,7 @@ class ServiceRAS implements ServiceRASInterface
 		if($result)
 		{
 			$data = ['username' => $username, 'first_name' => $firstName, 'last_name' => $lastName, 'school_id' => $schoolID];
+			
 			// Server successfully created the parent
 			Mail::send('emails.confirmation', $data, function($message) use ($email)
 			{		

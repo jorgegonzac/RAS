@@ -39,36 +39,6 @@ class ServiceRAS implements ServiceRASInterface
 		{
 			case 1:
 			case 2:
-				// Student - Resident Assistant
-				
-				// Transform to Upper Case first later so it fits the format A00000000				
-				$username = ucfirst($username);
-
-				// Connect to itesm pop server and get the authentication
-				$popServer = 'pop.itesm.mx';
-
-				// IMPORTANT: ITESM system is blocking my site (maybe some firewall thinks I'm a intruder)
-				// When working in localhost this problem doens't show up, only when working on production server
-				// Im gonna leave this authentication open in production server in order to make a demonstration
-				// But this problem is being solved by IT department of ITESM
-				// $auth = auth_pop3_ssl($username, $password, $popServer);  // Decomment this when working in localhost
- 				$auth = true; // Comment this when problem is solved
-
-				// user was authenticated by itesm
-				if($auth)
-				{
-					// Authenticate the user into the system
-					Auth::login($user[0]);
-
-					// Save user's role in the session
-					Session::put('role',$rol);
-
-					return $rol;
-				}
-
-				return -2;
-
-				break;
 			case 3:
 			case 4:
 			case 5:
@@ -846,6 +816,8 @@ class ServiceRAS implements ServiceRASInterface
 		$user -> last_name = $lastName;
 		$user -> career = $career;
 		$user -> room_number = $roomNumber;
+		$user -> password = $username; // Default password
+		$user -> email = $username . '@itesm.mx'; // Default email
 
 		// Get student role reference to assign to user
 		$role = Role::where('description', '=', 'student')->get();
@@ -1015,6 +987,54 @@ class ServiceRAS implements ServiceRASInterface
 		{
 			// Attemp to save user into DB
 			$result = $user -> save();
+	
+			// send code success
+			return 200;
+		}
+		catch(Exception $e)
+		{
+			// Something went wrong
+			return 500;
+		}	
+	}
+
+	/**
+	 * Store student settings
+	 * @param  [int] $id              User's id
+	 * @param  [string] $email           An string with the email
+	 * @param  [string] $password        An string with the password
+	 * @param  [string] $passwordConfirm An string with the password confirmation
+	 * @return [int]                  Final status code of process
+	 */
+	public function storeStudentSettings($id, $email, $password, $passwordConfirm)
+	{
+		$user = User::find($id);
+
+		// check if user exists
+		if(empty($user))
+		{
+			// if not, return 404, resource not found
+			return 404;
+		}	
+
+		if(strcmp($password, $passwordConfirm) != 0)
+		{
+			// bad request, return 400
+			return 400;
+		}
+
+		// if password is not null, set into user
+		if(!is_null($password))
+		{
+			$user->password = $password;
+		}
+
+		$user -> email = $email;
+
+		try
+		{
+			// Attemp to save user into DB
+			$result = $user->save();
 	
 			// send code success
 			return 200;

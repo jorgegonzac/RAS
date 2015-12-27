@@ -24,8 +24,22 @@
                     @endif
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="logout">Logout</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user"></i> 
+                                <!-- Get user name from the session data -->
+                                {{Auth::user()->first_name}} 
+                                    <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="settings"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

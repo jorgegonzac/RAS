@@ -40,6 +40,7 @@ interface ServiceRASInterface
 	public function createStudent($username, $firstName, $lastName, $career, $roomNumber);
 	public function importStudents($path);	
 	public function updateStudent($id, $username, $firstName, $lastName, $career, $roomNumber);
+	public function storeStudentSettings($id, $email, $password, $passwordConfirm);
 
 	// Resident assistant methods
 	public function createAssistant($username);	

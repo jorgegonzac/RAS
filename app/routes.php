@@ -63,6 +63,10 @@ Route::resource('students','StudentsController');
 
 Route::get('student', ['before' => 'auth', 'uses' => 'StudentsController@home']);
 
+Route::get('settings', ['before' => 'auth', 'uses' => 'StudentsController@showSettings']);
+
+Route::post('settings', ['before' => 'auth', 'uses' => 'StudentsController@storeSettings']);
+
 Route::get('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@importStudents']);
 
 Route::post('importStudents', ['before' => 'auth', 'uses' => 'StudentsController@storeStudents']);

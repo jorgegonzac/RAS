@@ -6,7 +6,6 @@
   <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
-       <!-- <h3 class="panel-title">Please sign in </h3> -->
         <div><img src="../images/logoResis.png" class="image-circle"/></div>  
       </div>
       <div class="panel-body">
@@ -21,6 +20,7 @@
         @endif
 
         {{ Form::open(array('url' => 'login')) }}
+
           <div class="form-group">
             {{ Form::text('username', '', array('class'=>'form-control input-sm', 'placeholder' => 'username','maxlength' => 15)) }}
           </div>
@@ -35,6 +35,8 @@
 
           {{ Form::submit('Sign In', array('class'=>'btn btn-info btn-block')) }}
         {{ Form::close() }}
+
+        <a href="/password/remind">Forgot your password ?</a>
       </div>
     </div>
   </div>

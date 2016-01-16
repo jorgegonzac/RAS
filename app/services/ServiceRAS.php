@@ -50,8 +50,9 @@ class ServiceRAS implements ServiceRASInterface
 					// Authenticate the user into the system
 					Auth::login($user[0]);
 
-					// Save user's role in the session
+					// Save user's role and data in the session
 					Session::put('role',$rol);
+					Session::put('room_number', $user[0]['room_number']);
 
 					return $rol;
 				}

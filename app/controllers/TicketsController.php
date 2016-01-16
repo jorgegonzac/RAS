@@ -352,37 +352,62 @@ class TicketsController extends \BaseController
 		}
 	}
 	/* hot fix */
-	public function showAttendanceListAdmin($floor)
+	public function showAttendanceListByFloor($floor)
 	{
 		// Check for user authorization (RA+Admin+Office)
 		if(Session::get('role')==2 || Session::get('role')==4 || Session::get('role')==5)
 		{			
 			$finalList;
+			
+			// Get the attendance list of each floor
+			switch ($floor) {
+				case 1:
+					$finalList = $this->serviceRAS->getAttendanceList(100);	
+					break;
+				
+				case 2:
+					$finalList = $this->serviceRAS->getAttendanceList(200);	
+					break;
+				
+				case 3:
+					$finalList = $this->serviceRAS->getAttendanceList(300);	
+					break;
 
-			// Check if user is admin
-			if(Session::get('role')==4)
-			{
-				// Get the attendance list of each floor
-				switch ($floor) {
-					case 1:
-						$finalList = $this->serviceRAS->getAttendanceList(100);	
-						break;
-					
-					case 2:
-						$finalList = $this->serviceRAS->getAttendanceList(200);	
-						break;
-					
-					case 3:
-						$finalList = $this->serviceRAS->getAttendanceList(300);	
-						break;
+				case 4:
+					$finalList = $this->serviceRAS->getAttendanceList(400);	
+					break;
 
-					case 4:
-						$finalList = $this->serviceRAS->getAttendanceList(400);	
-						break;
-				}
+				case 0:
+					// Get the attendance list of each floor
+					$listFloor1 = $this->serviceRAS->getAttendanceList(100);	
+					$listFloor2 = $this->serviceRAS->getAttendanceList(200);	
+					$listFloor3 = $this->serviceRAS->getAttendanceList(300);	
+					$listFloor4 = $this->serviceRAS->getAttendanceList(400);	
 
-				// Return admin attendance view
-				return View::make('admin.attendance.index', ['students' => $finalList]);				
+					// Merge all the lists into a final list
+					$finalList = array_merge($listFloor1, $listFloor2, $listFloor3, $listFloor4);
+
+					break;
+			}
+
+			switch (Session::get('role')) {
+				case 2:
+					// Return admin attendance view
+					return View::make('student.attendance', ['students' => $finalList]);				
+
+					break;
+
+				case 4:
+					// Return admin attendance view
+					return View::make('admin.attendance.index', ['students' => $finalList]);				
+
+					break;
+
+				case 5:
+					// Return admin attendance view
+					return View::make('office.attendance', ['students' => $finalList]);				
+
+					break;
 			}
 		}
 		else
@@ -517,14 +542,8 @@ class TicketsController extends \BaseController
 				}
 			}
 
-			if(Session::get('role')==4)
-			{
-				// redirect to previous route with data
-				return Redirect::back()->with(['created' => $created, 'closed' => $closed, 'problems' => $problems, 'msg' => $msg]);
-			}
-
 			// redirect to previous route with data
-			return Redirect::route('takeAttendance')->with(['created' => $created, 'closed' => $closed, 'problems' => $problems, 'msg' => $msg]);
+			return Redirect::back()->with(['created' => $created, 'closed' => $closed, 'problems' => $problems, 'msg' => $msg]);
 		}
 		else
 		{

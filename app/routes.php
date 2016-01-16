@@ -35,11 +35,7 @@ Route::get('takeAttendance', ['before' => 'auth', 'as' => 'takeAttendance', 'use
 
 Route::post('saveAttendance', ['before' => 'auth', 'uses' => 'TicketsController@saveAttendanceList']);
 
-/* hot fix */
-Route::get('takeAttendanceAdmin/{floor}', ['before' => 'auth', 'as' => 'takeAttendanceAdmin', 'uses' => 'TicketsController@showAttendanceListAdmin']);
-
-Route::post('saveAttendanceAdmin/{floor}', ['before' => 'auth', 'uses' => 'TicketsController@saveAttendanceListAdmin']);
-/* hot fix  */
+Route::get('takeAttendanceByFloor/{floor}', ['before' => 'auth', 'as' => 'takeAttendanceByFloor', 'uses' => 'TicketsController@showAttendanceListByFloor']);
 
 Route::post('adminTickets', ['before' => 'auth', 'uses' => 'TicketsController@storeTicket']);
 

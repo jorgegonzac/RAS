@@ -6,6 +6,12 @@
 		<div class="panel-heading" align="center">Lista de Asistencia</div>
       	<div class="panel-body">
       		<!-- Show resume -->
+      		@if($msg = Session::get('msg'))
+	          	<div class="alert alert-success alert-dismissable">
+		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		            <h5>{{$msg}}</h5>
+	          </div>
+	        @endif
       		@if($created = Session::get('created'))
 	          	<div class="alert alert-success alert-dismissable">
 		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

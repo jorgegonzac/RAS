@@ -6,7 +6,7 @@
   <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
-      	<h3>Tickets</h3>
+      	<h3>Avisos</h3>
       </div>
       <div class="panel-body">
 
@@ -14,21 +14,21 @@
         <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Place</th>
-                    <th>Phone</th>
-                    <th>Check in</th>
-                    <th>Check out</th>
-                    <th>Type</th>
+                    <th>Lugar</th>
+                    <th>Teléfono</th>
+                    <th>Hora de entrada</th>
+                    <th>Hora de salida</th>
+                    <th>Tipo de aviso</th>
                 </tr>
             </thead>
      
             <tfoot>
                 <tr>
-                    <th>Place</th>
-                    <th>Phone</th>
-                    <th>Check in</th>
-                    <th>Check out</th>
-                    <th>Type</th>
+                    <th>Lugar</th>
+                    <th>Teléfono</th>
+                    <th>Hora de entrada</th>
+                    <th>Hora de salida</th>
+                    <th>Tipo de aviso</th>
                 </tr>
             </tfoot>
      
@@ -42,7 +42,7 @@
                     <td>{{$ticket->check_out}}</td>
 
                 <!-- Define the an array with the types of tickets -->
-                {{--*/ $types = array('1' => 'Local', '2' => 'Foreign', '3' => 'Absence', '4' => 'Out of time') /*--}}
+                {{--*/ $types = array('1' => 'Local', '2' => 'Foráneo', '3' => 'Falta', '4' => 'Fuera de horario') /*--}}
 
                 <!-- set the ticket type according to the array-->
                     <td>{{$types[$ticket->type]}}</td>

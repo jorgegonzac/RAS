@@ -6,8 +6,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Tickets
-                <small>You can either delete, edit or create Tickets</small>
+                Avisos
+                <small>En este módulo puedes crear, modificar o eliminar avisos</small>
             </h1>
 
 			<div class="row centered-form">
@@ -26,13 +26,13 @@
 					        @if(Session::get('errors'))
 					          	<div class="alert alert-danger alert-dismissable">
 					            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					            <h5>There were some errors:</h5>
+					            <h5>Hubo algunos problemas:</h5>
 					              {{$errors}}
 					          </div>
 					        @elseif($success = Session::get('success'))        	
 						        <div class="alert alert-success alert-dismissable">
 						            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-						            <h5>Success:</h5>
+						            <h5>Éxito:</h5>
 						          	{{$success}}
 					    	    </div>	
 					        @endif
@@ -42,25 +42,25 @@
 						<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Room</th>
-					                <th>Place</th>
-					                <th>Check in</th>
-					                <th>Check out</th>
-					                <th>Type</th>
-					                <th>Action</th>
+					                <th>Nombre</th>
+					                <th>Cuarto</th>
+					                <th>Lugar</th>
+					                <th>Hora Salida</th>
+					                <th>Hora Entrada</th>
+					                <th>Tipo</th>
+					                <th>Acción</th>
 					            </tr>
 					        </thead>
 					 
 					        <tfoot>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Room</th>
-					                <th>Place</th>
-					                <th>Check in</th>
-					                <th>Check out</th>
-					                <th>Type</th>
-					                <th>Action</th>
+					                <th>Nombre</th>
+					                <th>Cuarto</th>
+					                <th>Lugar</th>
+					                <th>Hora Salida</th>
+					                <th>Hora Entrada</th>
+					                <th>Tipo</th>
+					                <th>Acción</th>
 					            </tr>
 					        </tfoot>
 					 
@@ -75,7 +75,7 @@
 					                <td>{{$ticket->check_out}}</td>
 
 						     	  	<!-- Define the an array with the types of tickets -->
-						     	  	{{--*/ $types = array('1' => 'Local', '2' => 'Foreign', '3' => 'Absence', '4' => 'Out of time') /*--}}
+						     	  	{{--*/ $types = array('1' => 'Local', '2' => 'Foráneo', '3' => 'Falta', '4' => 'Fuera de horario') /*--}}
 
 						     	  	<!-- set the ticket type according to the array-->
 					                <td>{{$types[$ticket->type]}}</td>
@@ -86,13 +86,13 @@
 								                {{ Form::open(array('url' => 'tickets/' . $ticket->id)) }}
 
 								                    {{ Form::hidden('_method', 'DELETE') }}
-								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Delete"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
+								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Eliminar"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
 								                
 								                {{ Form::close() }}
 					                		</div>
 					                		<div class="col-sm-6 text-center">
 					                			<!-- Form that edit ticket-->
-						             	   		<a  href="{{ URL::to('tickets/' . $ticket->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+						             	   		<a  href="{{ URL::to('tickets/' . $ticket->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Editar"></i></a>
 					                		</div>
 					                	</div>	                		                
 					            	</td>
@@ -105,7 +105,7 @@
 					                <i class="fa fa-dashboard"></i>  <a href="../admin">Dashboard</a>
 					        </li>
 							<li class="active">
-								<i class="fa fa-file"></i> Show tickets
+								<i class="fa fa-file"></i> Lista de avisos
 					        </li>
 					    </ol>
 					</div>

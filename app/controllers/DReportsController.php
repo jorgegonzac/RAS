@@ -98,7 +98,7 @@ class DReportsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The Disciplinary Report was created';
+				$success = 'Se creó correctamente el reporte disciplinario';
 				Session::flash('success', $success);
 
 			    return Redirect::action('DReportsController@create');
@@ -106,7 +106,7 @@ class DReportsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The username does not exist in the database.';
+				$errors = 'El estudiante no está registrado en el sistema';
 
 				return Redirect::to('dReports/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -114,7 +114,7 @@ class DReportsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error. Try again.';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			return Redirect::to('dReports/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -191,7 +191,7 @@ class DReportsController extends \BaseController
 			if($response == 200)
 			{
 				// redirect to previous route with success msg
-				$success = 'The Disciplinary Report was updated';
+				$success = 'Se modificó correctamente el reporte disciplinario';
 				Session::flash('success', $success);
 
 			    return Redirect::action('DReportsController@edit', array('id' => $id));
@@ -199,7 +199,7 @@ class DReportsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The username does not exist in the database.';
+				$errors = 'El estudiante no está registrado en el sistema.';
 
 			    return Redirect::to('dReports/' . $id . '/edit')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -207,7 +207,7 @@ class DReportsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error. Try again.';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 		    return Redirect::to('dReports/' . $id . '/edit')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -238,18 +238,18 @@ class DReportsController extends \BaseController
 			if($response == 204)
 			{
 				// save success msg in session
-				$success = 'The disciplinary report was deleted';
+				$success = 'El reporte disciplinario fue borrado exitosamente';
 				Session::flash('success', $success);
 			}
 			elseif($response == 404)
 			{
 				// save error msg in session
-				$errors = 'The disciplinary report does not exist';
+				$errors = 'El reporte disciplinario seleccionado no existe';
 				Session::flash('errors', $errors);
 			}
 			else{
 				// save error msg in session
-				$errors = 'There was an error while deleting, try again';
+				$errors = 'Hubo un error en el sistema. Intente más tarde';
 				Session::flash('errors', $errors);
 			}
 

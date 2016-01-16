@@ -6,8 +6,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Parents
-                <small>You can either delete, create or edit Parents</small>
+                Padres
+                <small>En este módulo puedes crear, modificar o eliminar padres</small>
             </h1>
 
 			<div class="row centered-form">
@@ -24,7 +24,7 @@
 					        @if(Session::get('errors'))
 					          	<div class="alert alert-danger alert-dismissable">
 					            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					            <h5>There were some errors:</h5>
+					            <h5>Hubo algunos problemas:</h5>
 					            @foreach($errors->all('<li>:message</li>') as $message)
 					              {{$message}}
 					            @endforeach
@@ -32,7 +32,7 @@
 					        @elseif($success = Session::get('success'))        	
 						        <div class="alert alert-success alert-dismissable">
 						            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-						            <h5>Success:</h5>
+						            <h5>Éxito:</h5>
 						          	{{$success}}
 					    	    </div>	
 					        @endif
@@ -42,21 +42,21 @@
 						<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Last Name</th>
-					                <th>Username</th>
-					                <th>Email</th>
-					                <th>Actions</th>
+					                <th>Nombre</th>
+					                <th>Apellido</th>
+					                <th>Usuario</th>
+					                <th>Correo</th>
+					                <th>Acciones</th>
 					            </tr>
 					        </thead>
 					 
 					        <tfoot>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Last Name</th>
-					                <th>Username</th>
-					                <th>Email</th>
-					                <th>Actions</th>
+					                <th>Nombre</th>
+					                <th>Apellido</th>
+					                <th>Usuario</th>
+					                <th>Correo</th>
+					                <th>Acciones</th>
 					            </tr>
 					        </tfoot>
 					 
@@ -75,14 +75,14 @@
 								                {{ Form::open(array('url' => 'parents/' . $user->id )) }}
 
 								                    {{ Form::hidden('_method', 'DELETE') }}
-								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Delete"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
+								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Eliminar"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
 								                
 								                {{ Form::close() }}
 					                		</div>
 
 					                		<div class="col-sm-6 text-center">
 					                			<!-- Form that edit ticket-->
-						             	   		<a  href="{{ URL::to('parents/' . $user->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+						             	   		<a  href="{{ URL::to('parents/' . $user->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Editar"></i></a>
 					                		
 					                		</div>
 					                	</div>	                		                
@@ -99,7 +99,7 @@
 		                <i class="fa fa-dashboard"></i>  <a href="../admin">Dashboard</a>
 		        </li>
 				<li class="active">
-					<i class="fa fa-file"></i> Show parents
+					<i class="fa fa-file"></i> Lista de padres
 		        </li>
 		    </ol>
 		</div>

@@ -101,27 +101,27 @@ class TicketsController extends \BaseController
 			if($response == 200)
 			{
 				// redirect to previous route with success msg
-				$success = 'The ticket was updated';
+				$success = 'El aviso fue modificado correctamente';
 
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);	
 			}
 			elseif($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The ticket was created';
+				$success = 'El aviso fue creado correctamente';
 
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => $type, 'success' => $success]);				
 			}
 			elseif($response == 202)
 			{
 				// redirect to previous route with error msg
-				$success = 'The ticket was created but as -out of time- ';
+				$success = 'El aviso fue creado correctamente pero está Fuera de horario ';
 
 				return View::make('student.absenceForm', ['place' => $place, 'phone' => $phone, 'type' => 4, 'success' => $success]);				
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			return Redirect::to('student')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -180,7 +180,7 @@ class TicketsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The ticket was created';
+				$success = 'El aviso fue creado correctamente';
 				Session::flash('success', $success);
 
 			    return Redirect::action('TicketsController@create');
@@ -188,7 +188,7 @@ class TicketsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The username does not exist in the database.';
+				$errors = 'El usuario no existe en el sistema.';
 
 				return Redirect::to('tickets/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -196,7 +196,7 @@ class TicketsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error. Try again.';
+			$errors = 'Hubo un error en el sistema. Intente más tarde.';
 
 			return Redirect::to('tickets/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -280,7 +280,7 @@ class TicketsController extends \BaseController
 			if($response == 200)
 			{
 				// redirect to previous route with success msg
-				$success = 'The ticket was updated';
+				$success = 'El aviso fue actualizado correctamente';
 				Session::flash('success', $success);
 
 			    return Redirect::action('TicketsController@edit', array('id' => $id));
@@ -288,7 +288,7 @@ class TicketsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The username does not exist in the database.';
+				$errors = 'El usuario no existe en el sistema';
 
 			    return Redirect::to('tickets/' . $id . '/edit')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -296,7 +296,7 @@ class TicketsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error. Try again.';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			    return Redirect::to('tickets/' . $id . '/edit')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -327,18 +327,18 @@ class TicketsController extends \BaseController
 			if($response == 204)
 			{
 				// save success msg
-				$success = 'The ticket was deleted';
+				$success = 'El aviso fue eliminado correctamente';
 				Session::flash('success', $success);
 			}
 			elseif($response == 404)
 			{
 				// save error msg
-				$errors = 'The ticket does not exist';
+				$errors = 'El aviso no existe en el sistema';
 				Session::flash('errors', $errors);
 			}
 			else{
 				// save error msg
-				$errors = 'There was an error while deleting, try again';
+				$errors = 'Hubo un error en el sistema. Intente más tarde';
 				Session::flash('errors', $errors);
 			}
 
@@ -351,6 +351,48 @@ class TicketsController extends \BaseController
 			return Redirect::to('login');			
 		}
 	}
+	/* hot fix */
+	public function showAttendanceListAdmin($floor)
+	{
+		// Check for user authorization (RA+Admin+Office)
+		if(Session::get('role')==2 || Session::get('role')==4 || Session::get('role')==5)
+		{			
+			$finalList;
+
+			// Check if user is admin
+			if(Session::get('role')==4)
+			{
+				// Get the attendance list of each floor
+				switch ($floor) {
+					case 1:
+						$finalList = $this->serviceRAS->getAttendanceList(100);	
+						break;
+					
+					case 2:
+						$finalList = $this->serviceRAS->getAttendanceList(200);	
+						break;
+					
+					case 3:
+						$finalList = $this->serviceRAS->getAttendanceList(300);	
+						break;
+
+					case 4:
+						$finalList = $this->serviceRAS->getAttendanceList(400);	
+						break;
+				}
+
+				// Return admin attendance view
+				return View::make('admin.attendance.index', ['students' => $finalList]);				
+			}
+		}
+		else
+		{
+			// Authenticated user does not have authorization to enter
+			return Redirect::to('login');			
+		}
+	}
+
+	/* hot fix */
 
 	/**
 	 * Shows the attendance list according to role and floor
@@ -438,7 +480,7 @@ class TicketsController extends \BaseController
 			$created = array();
 			$closed = array();
 			$problems = array();
-			$msg = 'The attendance was saved.';
+			$msg = 'La lista de asistencia fue guardada correctamente';
 
 			// Check if there are any students selected
 			if(is_array($students))
@@ -446,7 +488,7 @@ class TicketsController extends \BaseController
 				foreach($students as $key => $username)
 				{
 					// Data that will be sent to the method
-					$place = 'Absence';
+					$place = 'Falta';
 					$phone = '4421610181'; // This is the phone of the Residence Hall 
 					$type = 3;
 
@@ -470,9 +512,15 @@ class TicketsController extends \BaseController
 						$problems[] = $username;	
 
 						// update msg
-						$msg = $msg . 'But some problems ocurred:';				
+						$msg = $msg . 'Ocurrieron algunos problemas:';				
 					}
 				}
+			}
+
+			if(Session::get('role')==4)
+			{
+				// redirect to previous route with data
+				return Redirect::back()->with(['created' => $created, 'closed' => $closed, 'problems' => $problems, 'msg' => $msg]);
 			}
 
 			// redirect to previous route with data

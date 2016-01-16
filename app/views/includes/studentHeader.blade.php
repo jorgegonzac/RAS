@@ -15,11 +15,11 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav menu">
                     <li>
-                        <a href="student">Tickets</a>
+                        <a href="student">Avisos</a>
                     </li>
                     @if(Session::get('role') == 2)
                     <li>
-                        <a href="takeAttendance">Take Attendance</a>
+                        <a href="takeAttendance">Pasar Lista</a>
                     </li>
                     @endif
                 </ul>
@@ -33,11 +33,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="settings"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                <a href="settings"><i class="fa fa-fw fa-gear"></i> Configuración</a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                <a href="logout"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
                             </li>
                         </ul>
                     </li>

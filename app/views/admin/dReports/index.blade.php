@@ -6,8 +6,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Disciplinary Reports
-                <small>You can either delete, edit or create Disciplinary Reports</small>
+                Reportes disciplinarios
+                <small>En este módulo puedes crear, editar o eliminar reportes disciplinarios</small>
             </h1>
 
 			<div class="row centered-form">
@@ -16,7 +16,7 @@
 
 						<br>
 						<!-- Button to Create new ticket -->
-							<a href="../dReports/create"><button type="submit" class="btn btn-success"><i class="fa fa-lg fa-plus-circle"></i> New Disciplinary Report</button></a>
+							<a href="../dReports/create"><button type="submit" class="btn btn-success"><i class="fa fa-lg fa-plus-circle"></i> Crear reporte disciplinario</button></a>
 						<br>
 						<br>
 
@@ -25,13 +25,13 @@
 					        @if($errors = Session::get('errors'))
 					          	<div class="alert alert-danger alert-dismissable">
 					            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					            <h5>There were some errors:</h5>
+					            <h5>Hubo algunos problemas:</h5>
 					              {{$errors}}
 					          </div>
 					        @elseif($success = Session::get('success'))        	
 						        <div class="alert alert-success alert-dismissable">
 						            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-						            <h5>Success:</h5>
+						            <h5>Éxito:</h5>
 						          	{{$success}}
 					    	    </div>	
 					        @endif
@@ -41,21 +41,21 @@
 						<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th>Name</th>
-					                <th>Room</th>
-					                <th>Description</th>
-					                <th>Date</th>
-					                <th>Action</th>
+					                <th>Nombre</th>
+					                <th>Cuarto</th>
+					                <th>Descripción</th>
+					                <th>Fecha</th>
+					                <th>Acción</th>
 					            </tr>
 					        </thead>
 					 
 					        <tfoot>
 					            <tr>
-					                <th>Name</th>
-					                <th>Room</th>
-					                <th>Description</th>
-					                <th>Date</th>
-					                <th>Action</th>
+					                <th>Nombre</th>
+					                <th>Cuarto</th>
+					                <th>Descripción</th>
+					                <th>Fecha</th>
+					                <th>Acción</th>
 					            </tr>
 					        </tfoot>
 					 
@@ -76,13 +76,13 @@
 								                {{ Form::open(array('url' => 'dReports/' . $report->id)) }}
 
 								                    {{ Form::hidden('_method', 'DELETE') }}
-								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Delete"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
+								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Eliminar"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
 								                
 								                {{ Form::close() }}
 					                		</div>
 					                		<div class="col-sm-6 text-center">
 					                			<!-- Form that edit ticket-->
-						             	   		<a  href="{{ URL::to('dReports/' . $report->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Edit"></i></a>
+						             	   		<a  href="{{ URL::to('dReports/' . $report->id . '/edit') }}"> <i class="fa fa-pencil-square-o fa-lg" data-toggle="tooltip" data-placement="left" title="Editar"></i></a>
 					                		</div>
 					                	</div>	                		                
 					            	</td>
@@ -95,7 +95,7 @@
 					                <i class="fa fa-dashboard"></i>  <a href="../admin">Dashboard</a>
 					        </li>
 							<li class="active">
-								<i class="fa fa-file"></i> Show disciplinary reports
+								<i class="fa fa-file"></i> Lista de reportes disciplinarios
 					        </li>
 					    </ol>
 					</div>

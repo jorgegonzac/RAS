@@ -3,13 +3,13 @@
 @section('content')
 <div class="row centered-form">
 	<div class="panel panel-default">
-		<div class="panel-heading" align="center">Attendance List</div>
+		<div class="panel-heading" align="center">Lista de Asistencia</div>
       	<div class="panel-body">
       		<!-- Show resume -->
       		@if($created = Session::get('created'))
 	          	<div class="alert alert-success alert-dismissable">
 		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		            <h5>Created:</h5>
+		            <h5>Faltas Creadas:</h5>
 		            <ol>
 		            @foreach($created as $message)
 		              	<li>{{$message}}</li>
@@ -20,7 +20,7 @@
 	        @if($closed = Session::get('closed'))
 	        	<div class="alert alert-warning alert-dismissable">
 		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		            <h5>Closed:</h5>
+		            <h5>Avisos Cerrados:</h5>
 		            <ol>
 		            @foreach($closed as $message)
 		              	<li>{{$message}}</li>
@@ -31,7 +31,7 @@
 	        @if($problems = Session::get('problems'))
 	        	<div class="alert alert-danger alert-dismissable">
 		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		            <h5>System had problem creating:</h5>
+		            <h5>El sistema tuvo problemas con los siguientes:</h5>
 		            @foreach($problems as $message)
 		              	<li>{{$message}}</li>
 		            @endforeach
@@ -44,10 +44,10 @@
 				    <table class="table">
 				        <thead>
 				            <tr>
-				                <th>Room</th>
-				                <th>Name</th>
-				                <th>Status</th>
-				                <th>Check</th>
+				                <th>Cuarto</th>
+				                <th>Nombre</th>
+				                <th>Tipo</th>
+				                <th>Crear/Cerrar</th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -63,13 +63,13 @@
 				                @if($student['ticket'] == 1)
 				                	<span class="label label-info"> 	Local	</span>
 				                @elseif($student['ticket'] == 2)
-				                	<span class="label label-primary"> 	Foreign	</span>
+				                	<span class="label label-primary"> 	Foráneo	</span>
 				                @elseif($student['ticket'] == 3)
-				                	<span class="label label-warning"> 	Absence	</span>
+				                	<span class="label label-warning"> 	Falta	</span>
 				                @elseif($student['ticket'] == 4)
-				                	<span class="label label-danger"> 	Out of time	 </span>	
+				                	<span class="label label-danger"> 	Fuera de horario	 </span>	
 				               	@else
-					               	<span class="label label-success"> 	None	</span>
+					               	<span class="label label-success"> 	Ninguno	</span>
 				                @endif 
 					            </td>
 
@@ -82,7 +82,7 @@
 				        </tbody>
 				    </table>
 				</div>
-	            {{ Form::submit('Save', array('class'=>'btn btn-info btn-block')) }}
+	            {{ Form::submit('Guardar', array('class'=>'btn btn-info btn-block')) }}
 			</div>
 	        {{ Form::close() }}
 	    </div>

@@ -93,7 +93,7 @@ class AssistantsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The student is now a Resident Assistant';
+				$success = 'El estudiante fue registrado correctamente como prefecto';
 				Session::flash('success', $success);
 
 				return Redirect::action('AssistantsController@create');	
@@ -101,7 +101,7 @@ class AssistantsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student is not registered in the system';
+				$errors = 'El estudiante no está registrado en el sistema';
 
 				return Redirect::to('assistants/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -110,7 +110,7 @@ class AssistantsController extends \BaseController
 			elseif($response == 409)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student is already a Resident Assistant';
+				$errors = 'El estudiante ya está registrado como prefecto';
 
 				return Redirect::to('assistants/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -118,7 +118,7 @@ class AssistantsController extends \BaseController
 			}	
 
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			return Redirect::to('assistants/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -149,7 +149,7 @@ class AssistantsController extends \BaseController
 			if($response == 204)
 			{
 				// redirect to previous route with success msg
-				$success = 'The resident assistant was deleted';
+				$success = 'El prefecto fue eliminado correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('AssistantsController@index');	
@@ -157,7 +157,7 @@ class AssistantsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student does not exist';
+				$errors = 'El estudiante no está registrado en el sistema';
 				
 				return Redirect::to('assistants')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -165,7 +165,7 @@ class AssistantsController extends \BaseController
 			}
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 			return Redirect::to('assistants')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());			

@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="images/favicon.ico">
 
-    <title>RAS - Admin portal</title>
+    <title>RAS - Portal de administrador</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
                     <ul class="dropdown-menu">
                         <li class="divider"></li>
                         <li>
-                            <a href="../../logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="../../logout"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
                         </li>
                     </ul>
                 </li>
@@ -75,33 +75,52 @@
                     <li {{ Request::is('*admin*') ? 'class="active"' : '' }} >
                         <a href="../../admin"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
-
-                    <li {{ Request::is('*takeAttendance*') ? 'class="active"' : '' }} >
-                        <a href="../../takeAttendance"><i class="fa fa-fw fa-list-ol"></i> Take Attendance</a>
-                    </li>
                     
+                    <li {{ Request::is('*takeAttendanceAdmin*') || Request::is('*takeAttendanceAdmin*') || Request::is('*takeAttendanceAdmin*') ? 'class="active"' : '' }} >
+                        <a href="javascript:;" data-toggle="collapse" data-target="#attendance"><i class="fa fa-fw fa-list-ol"></i> Pase de lista <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="attendance" class="collapse">
+
+                            <li>
+                                <a href="../../takeAttendanceAdmin/1"><i class="fa fa-fw fa-list-ol"></i> Piso 1</a>
+                            </li>
+
+                            <li>
+                                <a href="../../takeAttendanceAdmin/2"><i class="fa fa-fw fa-list-ol"></i> Piso 2</a>
+                            </li>
+
+                            <li>
+                                <a href="../../takeAttendanceAdmin/3"><i class="fa fa-fw fa-list-ol"></i> Piso 3</a>
+                            </li>
+
+                            <li>
+                                <a href="../../takeAttendanceAdmin/4"><i class="fa fa-fw fa-list-ol"></i> Piso 4</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
                     <li {{ Request::is('*tickets*') ? 'class="active"' : '' }} >
-                        <a href="../../tickets"><i class="fa fa-fw fa-edit"></i> Tickets</a>
+                        <a href="../../tickets"><i class="fa fa-fw fa-edit"></i> Avisos</a>
                     </li>
                     
                     <li {{ Request::is('*dReports*') ? 'class="active"' : '' }} >
-                        <a href="../../dReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
+                        <a href="../../dReports"><i class="fa fa-fw fa-file-text"></i> Reportes disciplinarios</a>
                     </li>
                     
                     <li {{ Request::is('*tudents*') || Request::is('*assistants*') || Request::is('*parents*') ? 'class="active"' : '' }} >
-                        <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-users"></i> Usuarios <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="users" class="collapse">
 
                             <li>
-                                <a href="../../students">Students</a>
+                                <a href="../../students">Estudiantes</a>
                             </li>
 
                             <li>
-                                <a href="../../assistants">Resident Assistants</a>
+                                <a href="../../assistants">Prefectos</a>
                             </li>
 
                             <li>
-                                <a href="../../parents">Parents</a>
+                                <a href="../../parents">Padres</a>
                             </li>
                         </ul>
                     </li>

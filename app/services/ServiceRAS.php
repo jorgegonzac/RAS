@@ -10,6 +10,7 @@ use Report;
 use Mail;
 use Role;
 use Excel;
+use Carbon\Carbon;
 include("PopService.php");
 
 
@@ -123,19 +124,19 @@ class ServiceRAS implements ServiceRASInterface
 			$ticket = Ticket::find($openTicket[0] -> id);
 			$responseCode = 200;
 		}
+		
+		// Set timezone to Mexico City
+		date_default_timezone_set('America/Mexico_City');
 
 		// Fill ticket with he given data
 		$ticket -> place = $place;
 		$ticket -> phone = $phone;
 		$ticket -> type = $type;
-		$ticket -> check_in = DB::raw('NOW()');
+		$ticket -> check_in = Carbon::now();
 
 		// Get user by his username
 		$user = User::where('username', '=', $username)->get();
 		$ticket -> user_id = $user[0]->id;
-		
-		// Set timezone to Mexico City
-		date_default_timezone_set('America/Mexico_City');
 
 		// Get actual hour
 		$actualTime = getdate();
@@ -185,6 +186,9 @@ class ServiceRAS implements ServiceRASInterface
 
 			return $code;
 		}
+		
+		// Set timezone to Mexico City
+		date_default_timezone_set('America/Mexico_City');
 
 		// Create a new ticket reference
 		$ticket = new Ticket();
@@ -193,14 +197,11 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket -> place = $place;
 		$ticket -> phone = $phone;
 		$ticket -> type = $type;
-		$ticket -> check_in = DB::raw('NOW()');
+		$ticket -> check_in = Carbon::now();
 
 		// Get user by his username
 		$user = User::where('username', '=', $username)->get();
 		$ticket -> user_id = $user[0]->id;
-		
-		// Set timezone to Mexico City
-		date_default_timezone_set('America/Mexico_City');
 
 		// save ticket in DB
 		$response = $ticket -> save();
@@ -351,7 +352,7 @@ class ServiceRAS implements ServiceRASInterface
 		$ticket = Ticket::find($id);
 
 		// set check out hour
-		$ticket -> check_out = DB::raw('NOW()');
+		$ticket -> check_out = Carbon::now();
 
 		$response = $ticket -> save();
 
@@ -377,7 +378,8 @@ class ServiceRAS implements ServiceRASInterface
 
 		// Get the users that live between floor and the next floor
 		$users = User::where('room_number', '>=', $floor)
-				   	->where('room_number', '<', $nextFloor)->get();
+				   	->where('room_number', '<', $nextFloor)
+				   	->orderBy('room_number', 'asc')->get();
 		
 		// create list instance
 		$list = array();

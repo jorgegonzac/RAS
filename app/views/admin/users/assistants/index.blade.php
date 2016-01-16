@@ -6,8 +6,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Resident Assistants
-                <small>You can either delete or create Resident Assistants</small>
+                Prefectos
+                <small>En este módulo puedes registrar o eliminar prefectos</small>
             </h1>
 
 			<div class="row centered-form">
@@ -16,7 +16,7 @@
 
 						<br>
 						<!-- Button to Create new ticket -->
-						<a href="../assistants/create"><button type="submit" class="btn btn-success"><i class="fa fa-lg fa-plus-circle"></i> New Resident Assistant</button></a>
+						<a href="../assistants/create"><button type="submit" class="btn btn-success"><i class="fa fa-lg fa-plus-circle"></i> Registrar nuevo prefecto</button></a>
 						<br>
 
 						<!-- Show errors or success of deleting -->
@@ -24,7 +24,7 @@
 					        @if(Session::get('errors'))
 					          	<div class="alert alert-danger alert-dismissable">
 					            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					            <h5>There were some errors:</h5>
+					            <h5>Hubo algunos problemas:</h5>
 					            @foreach($errors->all('<li>:message</li>') as $message)
 					              {{$message}}
 					            @endforeach
@@ -32,7 +32,7 @@
 					        @elseif($success = Session::get('success'))        	
 						        <div class="alert alert-success alert-dismissable">
 						            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-						            <h5>Success:</h5>
+						            <h5>Éxito:</h5>
 						          	{{$success}}
 					    	    </div>	
 					        @endif
@@ -42,21 +42,21 @@
 						<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Last Name</th>
-					                <th>Room</th>
-					                <th>School id</th>
-					                <th>Actions</th>
+					                <th>Nombre</th>
+					                <th>Apellido</th>
+					                <th>Cuarto</th>
+					                <th>Matrícula</th>
+					                <th>Acciones</th>
 					            </tr>
 					        </thead>
 					 
 					        <tfoot>
 					            <tr>
-					                <th>First Name</th>
-					                <th>Last Name</th>
-					                <th>Room</th>
-					                <th>School id</th>
-					                <th>Actions</th>
+					                <th>Nombre</th>
+					                <th>Apellido</th>
+					                <th>Cuarto</th>
+					                <th>Matrícula</th>
+					                <th>Acciones</th>
 					            </tr>
 					        </tfoot>
 					 
@@ -75,7 +75,7 @@
 								                {{ Form::open(array('url' => 'assistants/' . $user->id )) }}
 
 								                    {{ Form::hidden('_method', 'DELETE') }}
-								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Delete"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
+								                    {{ Form::button('<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-placement="left" title="Dar de baja"></i>', array('type' => 'submit', 'class' => 'delete-btn')) }}
 								                
 								                {{ Form::close() }}
 					                		</div>
@@ -93,7 +93,7 @@
 		                <i class="fa fa-dashboard"></i>  <a href="../admin">Dashboard</a>
 		        </li>
 				<li class="active">
-					<i class="fa fa-file"></i> Show resident assistants
+					<i class="fa fa-file"></i> Lista de prefectos
 		        </li>
 		    </ol>
 		</div>

@@ -159,7 +159,7 @@ class ParentsController extends \BaseController
 		if($password != $passwordConfirm)
 		{
 			// redirect to previous route with error msg
-			$errors = 'The passwords doesnt match';
+			$errors = 'Las contraseñas no coinciden. Verifique de nuevo';
 
 		    return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -173,7 +173,7 @@ class ParentsController extends \BaseController
 		if($response == 201)
 		{
 			// redirect to previous route with success msg
-			$success = 'The account was created. An email was sent with information';
+			$success = 'La cuenta fue creada exitosamente. Se envió un correo de confirmación con sus datos';
 			Session::flash('success', $success);
 
 			return Redirect::action('ParentsController@createAccount');	
@@ -181,7 +181,7 @@ class ParentsController extends \BaseController
 		elseif($response == 412)
 		{
 			// redirect to previous route with error msg
-			$errors = 'The school id is not registered in the system';
+			$errors = 'La matrícula ingresada no está registrada en el sistema';
 
 			return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -190,7 +190,7 @@ class ParentsController extends \BaseController
 		elseif($response == 409)
 		{
 			// redirect to previous route with error msg
-			$errors = 'That username already exist';
+			$errors = 'El usuario ingresado ya existe en el sistema, intente otro';
 
 			return Redirect::to('createAccount')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -198,7 +198,7 @@ class ParentsController extends \BaseController
 		}	
 	
 		// redirect to previous route with error msg
-		$errors = 'There was an error';
+		$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 		return Redirect::to('student')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -292,7 +292,7 @@ class ParentsController extends \BaseController
 			if($password != $passwordConfirm)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The passwords doesnt match';
+				$errors = 'Las contraseñas no coinciden. Verifique de nuevo';
 
 			    return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -306,7 +306,7 @@ class ParentsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The account was created. An email was sent with information';
+				$success = 'La cuenta fue creada exitosamente. Se envió un correo de confirmación con sus datos';
 				Session::flash('success', $success);
 
 				return Redirect::action('ParentsController@create');	
@@ -314,7 +314,7 @@ class ParentsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The school id is not registered in the system';
+				$errors = 'La matrícula ingresada no está registrada en el sistema';
 
 				return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -323,7 +323,7 @@ class ParentsController extends \BaseController
 			elseif($response == 409)
 			{
 				// redirect to previous route with error msg
-				$errors = 'That username already exist';
+				$errors = 'El usuario ingresado ya existe en el sistema, intente otro';
 
 				return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -331,7 +331,7 @@ class ParentsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 			return Redirect::to('parents/create')
 			        ->withErrors($errors) // send back all errors to the  form
 			        ->withInput(Input::all());		
@@ -415,7 +415,7 @@ class ParentsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with success msg
-				$success = 'The account was updated';
+				$success = 'La información de la cuenta fue modificada correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('ParentsController@edit', ['id' => $id]);	
@@ -423,7 +423,7 @@ class ParentsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The school id is not registered in the system';
+				$errors = 'La matrícula ingresada no está registrada en el sistema';
 	
 			    return Redirect::to('parents/' . $id .'/edit')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -431,7 +431,7 @@ class ParentsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 		    return Redirect::to('parents/' . $id .'/edit')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -462,7 +462,7 @@ class ParentsController extends \BaseController
 			if($response == 204)
 			{
 				// redirect to previous route with success msg
-				$success = 'The parent was deleted';
+				$success = 'La cuenta fue eliminada correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('ParentsController@index');	
@@ -470,7 +470,7 @@ class ParentsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The parent does not exist';
+				$errors = 'La cuenta seleccionada no existe';
 				
 				return Redirect::to('parents')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -478,7 +478,7 @@ class ParentsController extends \BaseController
 			}
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 			
 			return Redirect::to('parents')
 		        ->withErrors($errors) // send back all errors to the  form

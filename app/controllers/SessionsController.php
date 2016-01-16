@@ -57,13 +57,13 @@ class SessionsController extends \BaseController
 			switch ($authCode) {
 				case -1:
 					// The username doesn't exist
-					$errors['username'] = "Username does not exist";
+					$errors['username'] = "El usuario no existe";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 
 				case -2:
 					// Invalid Password 
-					$errors['password'] = "Username and Password do not match";
+					$errors['password'] = "El usuario y contraseña no coinciden";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 
@@ -89,7 +89,7 @@ class SessionsController extends \BaseController
 									
 				default:
 					// If none of above, then redirect to login
-					$errors['system'] = "Hubo un error en el sistema. Intente de nuevo";
+					$errors['system'] = "Hubo un error en el sistema. Intente más tarde";
 					return Redirect::to('login')
 			        ->withErrors($errors);
 			}

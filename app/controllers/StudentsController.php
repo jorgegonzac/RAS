@@ -112,7 +112,7 @@ class StudentsController extends \BaseController
 			if($response == 200)
 			{
 				// redirect to previous route with sucess msg
-				$success = 'The settings were stored';
+				$success = 'La información fue actualizada correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('StudentsController@showSettings');	
@@ -120,7 +120,7 @@ class StudentsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student does not exist';
+				$errors = 'La cuenta seleccionada no existe';
 
 				return Redirect::to('settings')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -129,7 +129,7 @@ class StudentsController extends \BaseController
 			elseif($response == 400)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The passwords need to match';
+				$errors = 'Las contraseñas deben de coincidir';
 
 				return Redirect::to('settings')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -137,7 +137,7 @@ class StudentsController extends \BaseController
 			}	
 		
 			// The system had an error
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			return Redirect::to('settings')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -205,7 +205,7 @@ class StudentsController extends \BaseController
 			if($extension != 'xlsx')
 			{	
 				// redirect to previous route with error msg
-				$errors = 'The file is invalid. Only excel files are valid';
+				$errors = 'El archivo seleccionado no es válido. Sólo se adminten archivos .xlsx';
 				Session::flash('errors', $errors);
 
 			    return Redirect::to('importStudents');
@@ -227,7 +227,7 @@ class StudentsController extends \BaseController
 				if($response == 200)
 				{
 					// redirect to previous route with success msg
-					$success = 'The students were added';
+					$success = 'La lista fue importada correctamente';
 
 					Session::flash('success', $success);
 					return Redirect::action('StudentsController@importStudents');						
@@ -235,7 +235,7 @@ class StudentsController extends \BaseController
 				elseif($response == 400)
 				{
 					// redirect to previous route with error msg
-					$errors = 'The file does not have the proper format';
+					$errors = 'El archivo no tiene el formato adecuado. Revisar manual de usuario para mayor información';
 
 					return Redirect::to('importStudents')
 					        ->withErrors($errors) // send back all errors to the  form
@@ -244,7 +244,7 @@ class StudentsController extends \BaseController
 			}
 
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 			return Redirect::to('importStudents')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -347,7 +347,7 @@ class StudentsController extends \BaseController
 			if($response == 201)
 			{
 				// redirect to previous route with sucess msg
-				$success = 'The student was created';
+				$success = 'El estudiante fue creado correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('StudentsController@create');	
@@ -355,7 +355,7 @@ class StudentsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student was already registered';
+				$errors = 'El estudiante ya existe en el sistema';
 
 				return Redirect::to('students/create')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -440,7 +440,7 @@ class StudentsController extends \BaseController
 			if($response == 200)
 			{
 				// redirect to previous route with success msg
-				$success = 'The student was updated';
+				$success = 'La información del estudiante fue actualizada correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('StudentsController@edit', ['id' => $id]);	
@@ -448,7 +448,7 @@ class StudentsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student does not exist';
+				$errors = 'El estudiante seleccionado no está registrado en el sistema';
 
 			    return Redirect::to('students/' . $id .'/edit')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -456,7 +456,7 @@ class StudentsController extends \BaseController
 			}	
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'Hubo un error en el sistema. Intente más tarde';
 
 		    return Redirect::to('students/' . $id .'/update')
 		        ->withErrors($errors) // send back all errors to the  form
@@ -485,7 +485,7 @@ class StudentsController extends \BaseController
 			if($response == 204)
 			{
 				// redirect to previous route with successfull msg
-				$success = 'The student was deleted';
+				$success = 'El estudiante fue eliminado correctamente';
 				Session::flash('success', $success);
 
 				return Redirect::action('StudentsController@index');	
@@ -493,7 +493,7 @@ class StudentsController extends \BaseController
 			elseif($response == 404)
 			{
 				// redirect to previous route with error msg
-				$errors = 'The student does not exist';
+				$errors = 'El estudiante seleccionado no está registrado en el sistema';
 				
 				return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -502,7 +502,7 @@ class StudentsController extends \BaseController
 			elseif($response == 412)
 			{
 				// redirect to previous route with error msg
-				$errors = 'Student cannot be deleted. First delete his parent';
+				$errors = 'No se puede eliminar el estudiante. Se debe eliminar primero la cuenta de su padre';
 
 				return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form
@@ -510,7 +510,7 @@ class StudentsController extends \BaseController
 			}		
 		
 			// redirect to previous route with error msg
-			$errors = 'There was an error';
+			$errors = 'El estudiante seleccionado no está registrado en el sistema';
 
 			return Redirect::to('students')
 			        ->withErrors($errors) // send back all errors to the  form

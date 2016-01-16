@@ -17,7 +17,7 @@
         @elseif($error = Session::get('error'))
           <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>There was an error:</h5>
+            <h5>Hubo un error:</h5>
             {{$error}}
           </div>
         @endif
@@ -27,13 +27,15 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
               <div class="form-group">
-                <input type="email" name="email" placeholder="Enter your email" maxlength="50" class="form-control input-sm">
+                <input type="email" name="email" placeholder="Ingresa tu correo" maxlength="50" class="form-control input-sm">
               </div>
             </div>
           </div>
 
-          <input type="submit" value="Send Reminder" class="btn btn-info btn-block">
+          <input type="submit" value="Recuperar contraseña" class="btn btn-info btn-block">
         </form>
+
+        <a href="/">Iniciar Sesión</a>
 
 
       </div>

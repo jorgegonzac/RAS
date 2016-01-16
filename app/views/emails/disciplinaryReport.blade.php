@@ -4,11 +4,11 @@
     <meta charset=&quot;utf-8&quot;>
     </head>
     <body>
-<h2>Disciplinary Report Notification</h2>
+<h2>Notificación de nuevo reporte disciplinario</h2>
 <div>
-	A new Disciplinary report for <b> {{$user->first_name}} </b> has been created,
+	Se creó un nuevo reporte disciplinario para <b> {{$user->first_name}} </b>,
 
-	<br>Description:</br>
+	<br>Descripción:</br>
 	{{$report->description}}
 
 </div>

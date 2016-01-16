@@ -16,12 +16,13 @@
                     <div class="panel panel-default">
         <!-- Main jumbotron for a primary marketing message or call to action -->
                         <div class="jumbotron">
-                            <h1>Hello there!</h1>
+                            <h1>Bienvenido !!</h1>
                             <p>
-                                This portal will help you to admin the Residence Attendance System. 
-                                In the left you can find a navigation bar that will guide you through all the 
-                                modules of the system. In each module you will find different posibilities such as create, delete and
-                                edit information of each student living in the Residence Hall.
+                                Este portal le ayudará a administrar el Sistema de Asistencias de Residencias. 
+                                En el lado izquierdo se puede encontrar una barra de navegación que 
+                                le guiará a través de todos los módulos del sistema. 
+                                En cada módulo se encuentran diferentes posibilidades como crear, 
+                                eliminar y editar la información de cada estudiante que vive en Residencias.
                             </p>
                         </div>
                     </div>
@@ -37,7 +38,7 @@
             <i class="fa fa-dashboard"></i>  <a href="admin">Dashboard</a>
         </li>
         <li class="active">
-            <i class="fa fa-file"></i> Welcome
+            <i class="fa fa-file"></i> Bienvenido
         </li>
     </ol>
 </div>

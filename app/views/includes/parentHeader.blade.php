@@ -15,18 +15,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav menu">
                     <li>
-                        <a href="mySonTickets"><i class="fa fa-fw fa-check-square-o"></i> Tickets</a>
+                        <a href="mySonTickets"><i class="fa fa-fw fa-check-square-o"></i> Avisos</a>
                     </li>
                     <li>
-                        <a href="mySonDReports"><i class="fa fa-fw fa-file-text"></i> Disciplinary Reports</a>
+                        <a href="mySonDReports"><i class="fa fa-fw fa-file-text"></i> Reportes disciplinarios </a>
                     </li>
                     <li>
-                        <a href="myInfo"><i class="fa fa-fw fa-user"></i> My information</a>
+                        <a href="myInfo"><i class="fa fa-fw fa-user"></i> Mi información</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                        <a href="logout"><i class="fa fa-fw fa-sign-out"></i> Cerrar Sesión </a>
                     </li>
                 </ul>
             </div>

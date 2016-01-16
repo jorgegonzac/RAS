@@ -4,13 +4,13 @@
     <meta charset=&quot;utf-8&quot;>
     </head>
     <body>
-<h2>Sign up confirmation</h2>
+<h2>Confirmación de nueva cuenta</h2>
 <div>
-	Congratulations <b> {{$first_name}} {{$last_name}} </b> 
+	Felicitaciones <b> {{$first_name}} {{$last_name}} !</b> 
 	<br>
-	Your account has been created with the username <b> {{$username}} </b> and it's associated with the student <b>{{$school_id}}</b>
+	Su cuenta ha sido creada con el usuario <b> {{$username}} </b> y está asociada con la matrícula <b>{{$school_id}}</b>
 	<br>
-	You can now login at http://resisqueretaro.xyz/
+	Ahora puede acceder al sistema en la dirección http://resisqueretaro.xyz/
 </div>
 </body>
 </html>

@@ -17,7 +17,7 @@
         @elseif($error = Session::get('error'))
           <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>There was an error:</h5>
+            <h5>Hubo un error:</h5>
             {{$error}}
           </div>
         @endif
@@ -29,11 +29,11 @@
               <div class="form-group">
 
                 <input type="hidden" name="token" value="{{ $token }}">
-                <input type="email" name="email" placeholder="Enter your email" maxlength="50" class="form-control input-sm">
-                <input type="password" name="password" placeholder="New password" class="form-control input-sm">
-                <input type="password" name="password_confirmation" placeholder="Password confirmation" class="form-control input-sm">
+                <input type="email" name="email" placeholder="Ingresa tu correo" maxlength="50" class="form-control input-sm">
+                <input type="password" name="password" placeholder="Nueva contraseña" class="form-control input-sm">
+                <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" class="form-control input-sm">
 
-                <input type="submit" value="Reset Password" class="btn btn-info btn-block">
+                <input type="submit" value="Restaurar contraseña" class="btn btn-info btn-block">
 
               </div>
             </div>

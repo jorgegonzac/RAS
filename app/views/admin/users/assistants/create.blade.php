@@ -5,7 +5,7 @@
   <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
-        <h3>Create New Resident Assistant</h3>
+        <h3>Registrar nuevo prefecto</h3>
       </div>
       <div class="panel-body">
         <br>
@@ -16,7 +16,7 @@
               @if(Session::get('errors'))
                   <div class="alert alert-danger alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5>There were some errors:</h5>
+                  <h5>Hubo algunos problemas:</h5>
                   @foreach($errors->all('<li>:message</li>') as $message)
                     {{$message}}
                   @endforeach
@@ -24,7 +24,7 @@
               @elseif($success = Session::get('success'))         
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h5>Success:</h5>
+                    <h5>Éxito:</h5>
                     {{$success}}
                 </div>  
               @endif
@@ -37,8 +37,8 @@
 	            <div class="form-group col-sm-4"></div>
 
 	            <div class="form-group col-sm-4">
-	               <label for="username"> <h5>Username</h5></label>
-	                {{ Form::text('username', '', array('class'=>'form-control input-sm', 'placeholder' => 'Username', 'maxlength' => 9, 'required' => 'required')) }}
+	               <label for="username"> <h5>Matrícula</h5></label>
+	                {{ Form::text('username', '', array('class'=>'form-control input-sm', 'placeholder' => 'Matrícula', 'maxlength' => 9, 'required' => 'required')) }}
 	            </div>
 
 	            <div class="form-group col-sm-4"></div>
@@ -49,7 +49,7 @@
             <div class="form-group col-sm-4"></div>
             
             <div class="form-group col-sm-4">
-				{{ Form::submit('Create', array('class'=>'btn btn-info btn-block')) }}
+				{{ Form::submit('Registrar', array('class'=>'btn btn-info btn-block')) }}
           {{ Form::close() }}
             </div>
             
@@ -62,10 +62,10 @@
   </div>
   <ol class="breadcrumb">
     <li>
-      <i class="fa fa-users"></i>  <a href="../assistants">Resident Assistants</a>
+      <i class="fa fa-users"></i>  <a href="../assistants">Prefectos</a>
     </li>
     <li class="active">
-      <i class="fa fa-file"></i> Create resident assistant
+      <i class="fa fa-file"></i> Registrar nuevo prefecto
     </li>
   </ol>
 </div>

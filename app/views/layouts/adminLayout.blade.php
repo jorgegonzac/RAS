@@ -76,24 +76,24 @@
                         <a href="../../admin"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     
-                    <li {{ Request::is('*takeAttendanceAdmin*') || Request::is('*takeAttendanceAdmin*') || Request::is('*takeAttendanceAdmin*') ? 'class="active"' : '' }} >
+                    <li {{ Request::is('*takeAttendanceByFloor*') || Request::is('*takeAttendanceByFloor*') || Request::is('*takeAttendanceByFloor*') ? 'class="active"' : '' }} >
                         <a href="javascript:;" data-toggle="collapse" data-target="#attendance"><i class="fa fa-fw fa-list-ol"></i> Pase de lista <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="attendance" class="collapse">
 
                             <li>
-                                <a href="../../takeAttendanceAdmin/1"><i class="fa fa-fw fa-list-ol"></i> Piso 1</a>
+                                <a href="../../takeAttendanceByFloor/1"><i class="fa fa-fw fa-list-ol"></i> Piso 1</a>
                             </li>
 
                             <li>
-                                <a href="../../takeAttendanceAdmin/2"><i class="fa fa-fw fa-list-ol"></i> Piso 2</a>
+                                <a href="../../takeAttendanceByFloor/2"><i class="fa fa-fw fa-list-ol"></i> Piso 2</a>
                             </li>
 
                             <li>
-                                <a href="../../takeAttendanceAdmin/3"><i class="fa fa-fw fa-list-ol"></i> Piso 3</a>
+                                <a href="../../takeAttendanceByFloor/3"><i class="fa fa-fw fa-list-ol"></i> Piso 3</a>
                             </li>
 
                             <li>
-                                <a href="../../takeAttendanceAdmin/4"><i class="fa fa-fw fa-list-ol"></i> Piso 4</a>
+                                <a href="../../takeAttendanceByFloor/4"><i class="fa fa-fw fa-list-ol"></i> Piso 4</a>
                             </li>
 
                         </ul>
